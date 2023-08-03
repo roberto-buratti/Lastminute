@@ -1,0 +1,18 @@
+{
+  "hotels_list_title": {
+    "en": "Hotels",
+    "it": "Alberghi"
+  },
+  "price": {
+    "en": "Price per night",
+    "it": "Prezzo per notte"
+  },
+  "rating": {
+    "en": "Rating",
+    "it": "Valutazione"
+  },
+  "filter_and_sorting_title": {
+    "en": "Filter & Sorting",
+    "it": "Filtro & Ordinamento"
+  }
+}
