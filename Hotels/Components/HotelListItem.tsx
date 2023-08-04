@@ -8,10 +8,16 @@ import { star_full, star_empty, image_not_available, chevron_right } from '../As
 import colors from '../Styles/Colors'
 import HotelModel from '../Models/HotelModel'
 
+export enum HotelListItemMode {
+  wide,
+  tall
+}
+
 interface IProps {
   hotel: HotelModel
   isLoading: boolean
-  onItemTap: () => void
+  mode: HotelListItemMode
+  onDidTapItem: () => void
   style: any
 }
 
@@ -29,23 +35,49 @@ export default class HotelListItem extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { hotel, isLoading, style, onItemTap } = this.props
+    const { hotel, isLoading, mode, style, onDidTapItem } = this.props
 
-    const details = <View style={{...styles.details}}>
-      <View style={styles.detailsRow}>
-        <Text style={{fontWeight: 'bold'}}>{hotel.name}</Text>
-      </View>
-      <View style={styles.detailsRow}>
-        <Text style={{}}>
-          {hotel.location.address} ({hotel.location.city})
-        </Text>
-      </View>
-      <View style={styles.detailsRow}>
-        <Text style={{}}>
-          {copy.getString('rating')}: {hotel.userRating} • {copy.getString('price')}: {hotel.price.description} 
-        </Text>
-      </View>
-    </View> 
+    const details = mode == HotelListItemMode.wide 
+      ? <View style={{...styles.details}}>
+          <View style={styles.detailsRow}>
+            <Text style={{fontWeight: 'bold'}}>{hotel.name}</Text>
+          </View>
+          <View style={styles.detailsRow}>
+            <Text style={{}}>
+              {hotel.location.address} ({hotel.location.city})
+            </Text>
+          </View>
+          <View style={styles.detailsRow}>
+            <Text style={{}}>
+              {copy.getString('rating')}: {hotel.userRating} • {copy.getString('price')}: {hotel.price.description} 
+            </Text>
+          </View>
+        </View>
+      : <View style={{...styles.details}}>
+          <View style={styles.detailsRow}>
+            <Text style={{fontWeight: 'bold'}}>{hotel.name}</Text>
+          </View>
+          <View style={styles.detailsRow}>
+            <Text style={{}}>
+              {hotel.location.address}
+            </Text>
+          </View>
+          <View style={styles.detailsRow}>
+            <Text style={{}}>
+              {hotel.location.city}
+            </Text>
+          </View>
+          <View style={styles.detailsRow}>
+            <Text style={{}}>
+              {copy.getString('rating')}: {hotel.userRating}
+            </Text>
+          </View>
+          <View style={styles.detailsRow}>
+            <Text style={{}}>
+              {copy.getString('price')}: {hotel.price.description} 
+            </Text>
+          </View>
+        </View>
 
     const stars = Array(5).fill(0).map((_, index) => {
       const value = Math.round(hotel.userRating * 5.0 / 10.0)
@@ -54,7 +86,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
         : <Image key={index} source={star_full} style={styles.star}/>
     })
 
-    return <TouchableOpacity onPress={onItemTap} disabled={isLoading} style={{...styles.container, ...styles.row, ...style, opacity: isLoading ? 0.2 : 1.0}}>
+    return <TouchableOpacity onPress={onDidTapItem} disabled={isLoading} style={{...styles.container, ...styles.row, ...style, opacity: isLoading ? 0.2 : 1.0}}>
       <View style={styles.column}>
         <Image
           style={styles.avatar}
@@ -78,6 +110,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: colors.white,
     borderRadius: padding.half,
     padding: padding.half,
     marginBottom: padding.half,

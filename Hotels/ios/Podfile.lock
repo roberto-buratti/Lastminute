@@ -434,15 +434,17 @@ PODS:
     - React-jsi (= 0.71.4)
     - React-logger (= 0.71.4)
     - React-perflogger (= 0.71.4)
-  - ReactNativeNavigation (7.35.2):
+  - ReactNativeNavigation (7.36.0):
     - HMSegmentedControl
     - React-Core
+    - React-CoreModules
     - React-RCTImage
     - React-RCTText
-    - ReactNativeNavigation/Core (= 7.35.2)
-  - ReactNativeNavigation/Core (7.35.2):
+    - ReactNativeNavigation/Core (= 7.36.0)
+  - ReactNativeNavigation/Core (7.36.0):
     - HMSegmentedControl
     - React-Core
+    - React-CoreModules
     - React-RCTImage
     - React-RCTText
   - rn-fetch-blob (0.12.0):
@@ -462,7 +464,7 @@ PODS:
     - React-Core
   - RNPermissions (3.8.4):
     - React-Core
-  - RNReanimated (3.4.1):
+  - RNReanimated (3.3.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -491,7 +493,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.23.0):
+  - RNScreens (3.24.0):
     - React-Core
     - React-RCTImage
   - RNSecureStorage (0.1.2):
@@ -756,14 +758,14 @@ SPEC CHECKSUMS:
   React-RCTVibration: ad17efcfb2fa8f6bfd8ac0cf48d96668b8b28e0b
   React-runtimeexecutor: 8fa50b38df6b992c76537993a2b0553d3b088004
   ReactCommon: b49a4b00ca6d181ff74b17c12b2d59ac4add0bde
-  ReactNativeNavigation: 266b6bd9128ab4055e04741601d79dbe09a2e24d
+  ReactNativeNavigation: 11f3907b9401a859f07ea5cfe82a1518b154f1e8
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNGestureHandler: c0d04458598fcb26052494ae23dda8f8f5162b13
   RNImageCropPicker: 14fe1c29298fb4018f3186f455c475ab107da332
   RNLocalize: dbea38dcb344bf80ff18a1757b1becf11f70cae4
   RNPermissions: f1b49dd05fa9b83993cd05a9ee115247944d8f1a
-  RNReanimated: 6c5ec9e66b9d6a14e3f57c5f607f7c5169b6607e
-  RNScreens: 6a8a3c6b808aa48dca1780df7b73ea524f602c63
+  RNReanimated: 9976fbaaeb8a188c36026154c844bf374b3b7eeb
+  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSecureStorage: 24d433f7673a0daade43689de805933a70641731
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863

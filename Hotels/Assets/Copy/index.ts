@@ -10,9 +10,9 @@ import escapeRegexp from 'escape-string-regexp'
 
 import _strings from './strings.json'
 
-const copy = {
+const copy: any = {
   ..._strings,
-}
+} 
 
 export const weekDays = [
   'sunday',
@@ -47,11 +47,12 @@ const languages = [
   ),
 ]
 export const getSystemLanguage = () => {
-  return (findBestLanguageTag(languages) || 'en')
+  return (findBestLanguageTag(languages)?.languageTag || 'en')
 }
 
 export const configureMoment = () => {
-  moment.locale(getSystemLanguage() === 'en' ? 'en-gb' : getSystemLanguage())
+  const systemLanguage = getSystemLanguage()
+  moment.locale(systemLanguage === 'en' ? 'en-gb' : systemLanguage)
 }
 
 export const getString = (key: string, replacements?: { [key: string]: string }) => {
@@ -64,5 +65,5 @@ export const getString = (key: string, replacements?: { [key: string]: string })
       }
     })
   }
-  return text || key
+  return text || `missing_${key}`
 }

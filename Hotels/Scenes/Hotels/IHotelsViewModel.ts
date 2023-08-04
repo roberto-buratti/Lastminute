@@ -2,7 +2,10 @@ import { EventEmitter } from "events"
 
 import HotelModel from "../../Models/HotelModel"
 
-export default interface IHotelsViewModel {
+import IBaseViewModel from "../IBaseViewModel"
+import IHotelDetailsViewModel from "../HotelDetails/IHotelDetailsViewModel"
+
+export default interface IHotelsViewModel extends IBaseViewModel {
     events: EventEmitter
     title: string
     hotels: HotelModel[]
@@ -10,6 +13,7 @@ export default interface IHotelsViewModel {
     getHotelById(id: string): HotelModel | undefined
     reverseSorting(): void
     refresh(): void
+    hotelDetailsViewModel(hotel: HotelModel): IHotelDetailsViewModel
 }
 
 export enum HotelsViewModelEvents {

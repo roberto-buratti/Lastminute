@@ -1,21 +1,21 @@
+import IServiceFactory from "../../Services/Interfaces/IServiceFactory"
+
+import BaseViewModel from "../BaseViewModel"
 import IHomeViewModel from "./IHomeViewModel";
-import IServiceFactory from "../../Services/Interfaces/IServiceFactory";
+import IHotelsViewModel from "../Hotels/IHotelsViewModel"
 
-import IHotelsViewModel from "../Hotels/IHotelsViewModel";
+export default class HomeViewModel extends BaseViewModel implements IHomeViewModel {
+  private _hotelsViewModel?: IHotelsViewModel
 
-export default class HomeViewModel implements IHomeViewModel {
-    private _serviceFactory: IServiceFactory;
-    private _hotelsViewModel?: IHotelsViewModel
+  constructor(serviceFactory: IServiceFactory) {
+    super(serviceFactory)
+  }
 
-    constructor(serviceFactory: IServiceFactory) {
-        this._serviceFactory = serviceFactory;
+  public get hotelsViewModel(): IHotelsViewModel {
+    if (!this._hotelsViewModel) {
+      this._hotelsViewModel = this._serviceFactory.hotelsViewModel()
     }
-
-    public get hotelsViewModel(): IHotelsViewModel {
-        if (!this._hotelsViewModel) {
-            this._hotelsViewModel = this._serviceFactory.hotelsViewModel()
-        }
-        return this._hotelsViewModel
-    }
+    return this._hotelsViewModel
+  }
 
 }

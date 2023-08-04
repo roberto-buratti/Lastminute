@@ -15,21 +15,17 @@ import {
 
 import ServiceFactory from './Services/ServiceFactory';
 import HotelsScreen from './Scenes/Hotels/HotelsScreen';
+import HomeScreen from './Scenes/Home/HomeScreen';
 
 class App extends React.Component {
   private _serviceFactory = new ServiceFactory();
   private _viewModel = this._serviceFactory.appViewModel();
 
-  public async componentDidMount(): Promise<void> {
-    // let hotels = await this._serviceFactory.serviceManager.getHotels();
-    // console.log(`*** App:componentDidMount:result=${JSON.stringify(hotels)}`);
-  }
-
   public render() {
     return (
       <SafeAreaView>
         <View style={{width:'100%', height:'100%'}}>
-          <HotelsScreen viewModel={this._viewModel.hotelsViewModel}/>
+          <HomeScreen viewModel={this._viewModel.homeViewModel}/>
         </View>
       </SafeAreaView>
     );

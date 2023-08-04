@@ -1,5 +1,5 @@
-import IHotelsViewModel from "./Scenes/Hotels/IHotelsViewModel";
+import IHomeViewModel from "./Scenes/Home/IHomeViewModel";
 
 export default interface IAppViewModel {
-    hotelsViewModel: IHotelsViewModel
+    homeViewModel: IHomeViewModel
 }

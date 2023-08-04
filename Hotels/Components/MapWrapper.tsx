@@ -16,7 +16,6 @@ const pinPadding = 8
 
 interface IProps extends ViewProps {
   items: MapPointModel[]
-  onItemTap: (hotel: MapPointModel) => void
   renderCallout: (id: string) => React.JSX.Element | null
   showCallout: boolean
 }
@@ -41,136 +40,14 @@ class MapWrapper extends Component<IProps, IState> {
     }
   }
 
-  private onMapReady = (mapIsReady: boolean, mapDidLayout: boolean) => {
-    this.mapIsReady = this.mapIsReady || mapIsReady
-    this.mapDidLayout = this.mapDidLayout || mapDidLayout
-    if (this.mapIsReady && this.mapDidLayout) {
-      if (this.mapRef.current) {
-        this.forceUpdate(() => {
-          // console.log(`*** Map:onMapReady: now centering map`)
-          this.centerMap(true)
-        })
-      }
-    }
-  }
-
-  private async coordinatesForItems() {
-    if (!this.mapRef.current) {
-      return []
-    }
-    if (this.props.items.length == 0) {
-      return []
-    }
-    // console.log(`*** Map:coordinatesForItems: items=${this.props.items.length} => ${JSON.stringify(this.props.items)}`)
-    const locations = this.props.items.map((i) => i.location)
-    // console.log(`*** Map:coordinatesForItems: locations=${JSON.stringify(locations)}`)
-    const coordinates = locations.map((l) => { return { latitude: l.latitude, longitude: l.longitude }})
-    // console.log(`*** Map:coordinatesForItems: coordinates=${JSON.stringify(coordinates)}`)
-    const avgLat = coordinates.map(c => c.latitude).reduce((sum, value) => { return sum + value }, 0) / coordinates.length
-    const avgLon = coordinates.map(c => c.longitude).reduce((sum, value) => { return sum + value }, 0) / coordinates.length
-    const minLatitudeDelta = 1.0 / 110.574 // not less than 1 km
-    const minLongitudeDelta = 1.0 / 111.320 * Math.cos(avgLat * Math.PI / 180.0) // not less than 1 km
-
-    coordinates.push({
-      latitude: avgLat + minLatitudeDelta / 2,
-      longitude: avgLon + minLongitudeDelta / 2
-    })
-    coordinates.push({
-      latitude: avgLat + minLatitudeDelta / 2,
-      longitude: avgLon - minLongitudeDelta / 2
-    })
-    coordinates.push({
-      latitude: avgLat - minLatitudeDelta / 2,
-      longitude: avgLon + minLongitudeDelta / 2
-    })
-    coordinates.push({
-      latitude: avgLat - minLatitudeDelta / 2,
-      longitude: avgLon - minLongitudeDelta / 2
-    })
-    return coordinates
-  }
-
-  private async fitToItems() {
-    const coordinates = await this.coordinatesForItems()
-    const edgePadding = {
-      top: 1.5 * pinHeight * pinScale,
-      left: pinWidth * pinScale,
-      right: pinWidth * pinScale,
-      bottom: 0.5 * pinHeight * pinScale
-    }
-    console.log(`*** Map:fitToItems: coordinates=${JSON.stringify(coordinates)} edgePadding=${JSON.stringify(edgePadding)}`)
-    this.mapRef.current!.fitToCoordinates(coordinates, { edgePadding, animated: true })
-  }
-
-  private initialRegion(): Region | undefined {
-    const { items } = this.props
-    if (items.length == 0) {
-      return undefined
-    }
-    const maxLat = items.map(i => i.location.latitude).reduce((max, value) => Math.max(max, value), -90)
-    const minLat = items.map(i => i.location.latitude).reduce((min, value) => Math.min(min, value), 90)
-    const maxLon = items.map(i => i.location.longitude).reduce((max, value) => Math.max(max, value), -180)
-    const minLon = items.map(i => i.location.longitude).reduce((min, value) => Math.min(min, value), 180)
-    const avgLat = items.map(i => i.location.latitude).reduce((sum, value) => { return sum + value }, 0) / items.length
-    const avgLon = items.map(i => i.location.longitude).reduce((sum, value) => { return sum + value }, 0) / items.length
-    const minLatitudeDelta = 100.0 / 110.574 // 100 km
-    const minLongitudeDelta = 100.0 / 111.320 * Math.cos(avgLat * Math.PI / 180.0) // 100 km
-    const region = {
-      latitude: (maxLat + minLat) / 2,
-      longitude: (maxLon + minLon) / 2,
-      latitudeDelta: Math.max(maxLat - minLat, minLatitudeDelta),
-      longitudeDelta: Math.max(maxLon - minLon, minLongitudeDelta)
-    }
-    return region
-  }
-
-  public componentDidUpdate = (_: IProps, prevState: IState) => {
-    if (!(this.mapIsReady && this.mapDidLayout)) {
-      return
-    }
-    this.centerMap()
-  }
-
-  public async centerMap(force: boolean = false) {
-    if (!this.mapIsReady || !this.mapDidLayout || !this.mapRef.current) { // map not yet ready, retry later
-      console.log(`*** Map:centerMap: map not yet ready, retry later`)
-      return
-    }
-    const pw = pinWidth * pinScale
-    const ph = pinHeight * pinScale
-
-    let needsRedraw = force
-    // console.log(`*** Map:centerMap: force=${force} needsRedraw=${needsRedraw}`)
-    const locations = this.props.items.map(l => l.location)
-    for (const location of locations) {
-      try {
-        const point = await this.mapRef.current!.pointForCoordinate({ latitude: location.latitude!, longitude: location.longitude! })
-        if (point.x < pw / 2 || point.y < 1.5 * ph) {  // 1.5 * ph => heuristic adjustment for callout
-          needsRedraw = true
-          break
-        }
-        if (point.x > this.mapWidth - pw / 2 || point.y > this.mapHeight) {
-          needsRedraw = true
-          break
-        }
-    } catch (error: any) {
-        console.log('*** Map:centerMap: got error from pointForCoordinate()', error.message)
-        needsRedraw = true
-        break
-      }
-    }
-    if (needsRedraw) {
-      this.fitToItems()
-    }
-  }
-
   public render() {
-    const { items, onItemTap, showCallout, ...viewProps } = this.props
+    const { items, showCallout, ...viewProps } = this.props
 
     return <View {...viewProps} collapsable={false}
       onLayout={(event: any) => {
         this.mapWidth = event.nativeEvent.layout.width
         this.mapHeight = event.nativeEvent.layout.height
+        this.centerMap()
       }}>
       <MapView
         collapsable={false}
@@ -227,12 +104,109 @@ class MapWrapper extends Component<IProps, IState> {
       </MapView>
       <ImageButton
         source={center_map}
-        onPress={() => { if (this.mapRef.current) { this.centerMap(true) } }}
+        onPress={() => { if (this.mapRef.current) { this.centerMap() } }}
         style={styles.centerButton}
       />
     </View>
   }
 
+  // MARK: - Private
+
+  private onMapReady = (mapIsReady: boolean, mapDidLayout: boolean) => {
+    if (this.mapIsReady && this.mapDidLayout) {
+      return
+    }
+    this.mapIsReady = this.mapIsReady || mapIsReady
+    this.mapDidLayout = this.mapDidLayout || mapDidLayout
+    if (this.mapIsReady && this.mapDidLayout) {
+      if (this.mapRef.current) {
+        this.forceUpdate(() => {
+          // console.log(`*** Map:onMapReady: now centering map`)
+          this.centerMap()
+        })
+      }
+    }
+  }
+
+  private async coordinatesForItems() {
+    if (!this.mapRef.current) {
+      return []
+    }
+    if (this.props.items.length == 0) {
+      return []
+    }
+    // console.log(`*** Map:coordinatesForItems: items=${this.props.items.length} => ${JSON.stringify(this.props.items)}`)
+    const locations = this.props.items.map((i) => i.location)
+    // console.log(`*** Map:coordinatesForItems: locations=${JSON.stringify(locations)}`)
+    const coordinates = locations.map((l) => { return { latitude: l.latitude, longitude: l.longitude }})
+    // console.log(`*** Map:coordinatesForItems: coordinates=${JSON.stringify(coordinates)}`)
+    const avgLat = coordinates.map(c => c.latitude).reduce((sum, value) => { return sum + value }, 0) / coordinates.length
+    const avgLon = coordinates.map(c => c.longitude).reduce((sum, value) => { return sum + value }, 0) / coordinates.length
+    const minLatitudeDelta = 1.0 / 110.574 // not less than 1 km
+    const minLongitudeDelta = 1.0 / 111.320 * Math.cos(avgLat * Math.PI / 180.0) // not less than 1 km
+
+    coordinates.push({
+      latitude: avgLat + minLatitudeDelta / 2,
+      longitude: avgLon + minLongitudeDelta / 2
+    })
+    coordinates.push({
+      latitude: avgLat + minLatitudeDelta / 2,
+      longitude: avgLon - minLongitudeDelta / 2
+    })
+    coordinates.push({
+      latitude: avgLat - minLatitudeDelta / 2,
+      longitude: avgLon + minLongitudeDelta / 2
+    })
+    coordinates.push({
+      latitude: avgLat - minLatitudeDelta / 2,
+      longitude: avgLon - minLongitudeDelta / 2
+    })
+    return coordinates
+  }
+
+  private initialRegion(): Region | undefined {
+    const { items } = this.props
+    if (items.length == 0) {
+      return undefined
+    }
+    const maxLat = items.map(i => i.location.latitude).reduce((max, value) => Math.max(max, value), -90)
+    const minLat = items.map(i => i.location.latitude).reduce((min, value) => Math.min(min, value), 90)
+    const maxLon = items.map(i => i.location.longitude).reduce((max, value) => Math.max(max, value), -180)
+    const minLon = items.map(i => i.location.longitude).reduce((min, value) => Math.min(min, value), 180)
+    const avgLat = items.map(i => i.location.latitude).reduce((sum, value) => { return sum + value }, 0) / items.length
+    const avgLon = items.map(i => i.location.longitude).reduce((sum, value) => { return sum + value }, 0) / items.length
+    const minLatitudeDelta = 100.0 / 110.574 // 100 km
+    const minLongitudeDelta = 100.0 / 111.320 * Math.cos(avgLat * Math.PI / 180.0) // 100 km
+    const region = {
+      latitude: (maxLat + minLat) / 2,
+      longitude: (maxLon + minLon) / 2,
+      latitudeDelta: Math.max(maxLat - minLat, minLatitudeDelta),
+      longitudeDelta: Math.max(maxLon - minLon, minLongitudeDelta)
+    }
+    return region
+  }
+
+  private async centerMap() {
+    if (!this.mapIsReady || !this.mapDidLayout || !this.mapRef.current) { // map not yet ready, retry later
+      console.log(`*** Map:centerMap: map not yet ready, retry later`)
+      return
+    }
+    setTimeout(()=>{
+      this.fitToItems()
+    }, 500)
+  }
+
+  private async fitToItems() {
+    const coordinates = await this.coordinatesForItems()
+    const edgePadding = {
+      top: 1.5 * pinHeight * pinScale,
+      left: pinWidth * pinScale,
+      right: pinWidth * pinScale,
+      bottom: 0.5 * pinHeight * pinScale
+    }
+    console.log(`*** Map:fitToItems: coordinates=${JSON.stringify(coordinates)} edgePadding=${JSON.stringify(edgePadding)}`)
+    this.mapRef.current!.fitToCoordinates(coordinates, { edgePadding, animated: true })
+  }
 }
 
 export default MapWrapper

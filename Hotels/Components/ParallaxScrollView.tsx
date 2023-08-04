@@ -1,10 +1,9 @@
 import * as React from 'react'
 import {
-  Animated, StyleSheet, View, FlatList, ListRenderItem, FlatListProps, Dimensions
+  StyleSheet, View, FlatList, ListRenderItem, FlatListProps, Dimensions
 } from 'react-native'
 import padding from '../Styles/Padding'
 import colors from '../Styles/Colors'
-import shadows from '../Styles/Shadow'
 
 interface IProps extends FlatListProps<any> {
   stickyHeaderView?: React.ReactElement<any>
@@ -30,6 +29,8 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
   }
 
   private scrollView = React.createRef<FlatList<any>>()
+  private shouldIgnoreScroll = false
+  private resizeTimeout: NodeJS.Timeout | undefined = undefined
 
   public render() {
     const {
@@ -46,24 +47,20 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
     } = this.props
 
     const parallaxHeight = Math.max(0, this.state.height - this.state.scrollOffset - stickyHeaderHeight - handleHeight)
+
     // console.log(`*** ParallaxScrollView:render: height=${this.state.height} scrollOffset=${this.state.scrollOffset} parallaxHeight=${parallaxHeight}`)
 
     return <FlatList
       ref={this.scrollView}
       {...flatListProps}
-      onLayout={e => {
-        if (this.state.height !== e.nativeEvent.layout.height) {
-          this.setState({ height: e.nativeEvent.layout.height })
-        }
-        if (flatListProps.onLayout) { flatListProps.onLayout(e) }
-      }}
       style={[styles.container, style]}
+      contentContainerStyle={{backgroundColor: colors.white}}
       scrollIndicatorInsets={{ right: 1 }}
       bounces={true}
       data={[{ key:'parallax' }, { key:'header' }, ...data]}
       stickyHeaderIndices={[1]}
       renderItem={itemData => {
-        console.log(`*** ParallaxScrollView:renderItem: itemData.index=${itemData.index} itemData=${JSON.stringify(itemData)}`)
+        // console.log(`*** ParallaxScrollView:renderItem: itemData.index=${itemData.index} itemData=${JSON.stringify(itemData)}`)
         if (itemData.index === 0) {
           return <View
             key={itemData.item.key} 
@@ -71,7 +68,7 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
           >
             <View
               key={itemData.item.key} 
-              style={{...styles.parallaxComponent, height: parallaxHeight}}
+              style={{...styles.parallaxComponent, minHeight: parallaxHeight, maxHeight: parallaxHeight}}
             >
               {parallaxView}
             </View>
@@ -93,15 +90,58 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
           </View>
         }
       }}
+      onLayout={e => {
+        if (this.state.height !== e.nativeEvent.layout.height) {
+          this.setState({ height: e.nativeEvent.layout.height })
+        }
+        if (flatListProps.onLayout) { flatListProps.onLayout(e) }
+      }}
       onContentSizeChange={(w, h) => {
         if (this.scrollView.current) {
           this.scrollView.current.scrollToOffset({ animated: true, offset: h / 4 })
         }
-    }}
+      }}
+      onScrollBeginDrag={(e) => {
+        this.shouldIgnoreScroll = false
+      }}
+      onScrollEndDrag={(e) => {
+        const scrollOffset = e.nativeEvent.targetContentOffset ? e.nativeEvent.targetContentOffset.y : undefined
+        if (scrollOffset) {
+          this.shouldIgnoreScroll = true  // we got `targetContentOffset`, so we can ignore any subsequent scroll event ;)
+          if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout)
+            this.resizeTimeout = undefined
+          }
+          if (scrollOffset < this.state.scrollOffset) {
+            // if we are scrolling down (so enlarging the parallax view) resize it immediately (to make it visible while scrolling)
+            this.setState({ scrollOffset: scrollOffset })
+          } else if (scrollOffset > this.state.scrollOffset) {
+            // if we are scrolling up (so reducing the parallax view) resize it after a small delay (to prevent flickering)
+            this.resizeTimeout = setTimeout(() => {
+              this.setState({ scrollOffset: scrollOffset })
+            }, 1000)
+          }
+        }
+      }}
       onScroll={(e) => {
+        const scrollOffset = e.nativeEvent.targetContentOffset ? e.nativeEvent.targetContentOffset.y : e.nativeEvent.contentOffset.y
+        if (!this.shouldIgnoreScroll && this.state.scrollOffset != scrollOffset) {
+          if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout)
+            this.resizeTimeout = undefined
+          }
+         this.setState({ scrollOffset: scrollOffset })
+        }
         if (flatListProps.onScroll) { flatListProps.onScroll(e) }
+      }}
+      onMomentumScrollEnd={(e) => {
         const scrollOffset = e.nativeEvent.contentOffset.y
-        if (scrollOffset >= 0) {
+        this.shouldIgnoreScroll = false
+        if (scrollOffset != this.state.scrollOffset) {
+          if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout)
+            this.resizeTimeout = undefined
+          }
           this.setState({ scrollOffset: scrollOffset })
         }
       }}
@@ -113,7 +153,7 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: padding.triple
+    paddingBottom: padding.triple,
   },
   parallaxContainer: {
     overflow: 'hidden',
@@ -126,7 +166,7 @@ export const styles = StyleSheet.create({
   },
   handleBar: {
     backgroundColor: colors.white,
-    ...shadows.invertedShadowObject,
+    // ...shadows.invertedShadowObject,
     borderBottomColor: colors.veryLightGrey,
     borderTopColor: colors.veryLightGrey,
     borderLeftColor: colors.white,

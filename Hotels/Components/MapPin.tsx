@@ -65,9 +65,10 @@ const styles = StyleSheet.create({
     },
     avatar: {
       zIndex: 2,
-      marginTop: 7,
-      marginLeft: 6.5,
-      marginRight: 6.5,
+      marginTop: 6.5,
+      alignSelf: 'center'
+      // marginLeft: 6.5,
+      // marginRight: 6.5,
     }
 })
   
