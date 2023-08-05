@@ -1,10 +1,8 @@
-import RNFetchBlob from 'rn-fetch-blob'
-
 export default class NetworkManager {
   public jwtToken?: string
   public refreshToken?: string
 
-  public async getHotels(): Promise<any> {
+  public async getHotels(): Promise<any[]> {
     const url = `https://run.mocky.io/v3/eef3c24d-5bfd-4881-9af7-0b404ce09507`;
     const request = new Request(url, { 
       method: 'GET',
@@ -14,7 +12,7 @@ export default class NetworkManager {
       },
     })
     let response = await this._fetchWithTimeout(request, 15);
-    console.log(`*** NetworkManager:getHotels: response=${JSON.stringify(response)}`)
+    //console.log(`*** NetworkManager:getHotels: response=${JSON.stringify(response)}`)
     this._validateResponse(response)
     return response.json();
   }

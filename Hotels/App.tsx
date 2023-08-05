@@ -7,27 +7,24 @@
 
 import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
   View,
 } from 'react-native';
 
 
-import ServiceFactory from './Services/ServiceFactory';
-import HotelsScreen from './Scenes/Hotels/HotelsScreen';
-import HomeScreen from './Scenes/Home/HomeScreen';
+import ServiceFactory from './Services/ServiceFactory'
+import AppViewModel from './AppViewModel'
+import HomeScreen from './Scenes/Home/HomeScreen'
 
 class App extends React.Component {
-  private _serviceFactory = new ServiceFactory();
-  private _viewModel = this._serviceFactory.appViewModel();
+  private _serviceFactory = new ServiceFactory()
+  private _viewModel = new AppViewModel(this._serviceFactory)
 
   public render() {
     return (
-      <SafeAreaView>
         <View style={{width:'100%', height:'100%'}}>
-          <HomeScreen viewModel={this._viewModel.homeViewModel}/>
+          <HomeScreen viewModel={this._viewModel.homeViewModel()}/>
         </View>
-      </SafeAreaView>
     );
   } 
 }

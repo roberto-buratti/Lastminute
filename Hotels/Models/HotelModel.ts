@@ -45,7 +45,7 @@ export default class HotelModel {
       json.id,
       json.name,
       LocationModel.fromJSON(json.location),
-      json.starts,
+      json.stars,
       TimeModel.fromJSON(json.checkIn),
       TimeModel.fromJSON(json.checkOut),
       ContactModel.fromJSON(json.contact),

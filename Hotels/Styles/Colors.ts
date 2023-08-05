@@ -19,5 +19,6 @@ export default {
   green: '#169D83',
   red: '#CB2237',
   orange: '#CB5222',
-  yellow: '#EDC15F'
+  yellow: '#EDC15F',
+  lastminute: '#DE307C'
 }

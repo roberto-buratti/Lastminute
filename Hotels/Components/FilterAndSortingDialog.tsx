@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native'
 
 import * as copy from '../Assets/Copy'
 import padding from '../Styles/Padding'
+import colors from '../Styles/Colors'
 
 interface IProps {
 }
@@ -22,6 +23,7 @@ export default class FilterAndSortingDialog extends React.Component<IProps, ISta
     return <View style={styles.container}>
       <View style={styles.column}>
         <Text style={styles.title}>{copy.getString("filter_and_sorting_title")}</Text>
+        <View style={{width:'100%',borderBottomColor: colors.veryLightGrey, borderBottomWidth: 1}}/>
       </View>
     </View>
     
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     fontWeight: 'bold',
-    width: '100%'
+    width: '100%',
   }
 })
 

@@ -65,5 +65,5 @@ export const getString = (key: string, replacements?: { [key: string]: string })
       }
     })
   }
-  return text || `missing_${key}`
+  return text != undefined ? text : `[missing:${key}]`
 }

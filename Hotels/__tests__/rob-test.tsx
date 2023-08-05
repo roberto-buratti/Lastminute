@@ -12,7 +12,7 @@ import IServiceManager from '../Services/Interfaces/IServiceManager';
 import UserModel from '../Models/HotelModel';
 
 import IAppViewModel from '../IAppViewModel';
-import IHomeViewModel from '../Scenes/Hotels/IHotelsViewModel';
+import IHomeViewModel from '../Scenes/HotelsList/IHotelsListViewModel';
 import IWelcomeViewModel from '../Scenes/Welcome/IWelcomeViewModel';
 import ILoginViewModel from '../Scenes/Login/ILoginViewModel';
 

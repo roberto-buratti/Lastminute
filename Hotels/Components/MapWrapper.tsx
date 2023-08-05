@@ -5,9 +5,11 @@ import MapView, { Region, Marker, Callout } from 'react-native-maps'
 import MapPointModel from '../Models/MapPoint'
 
 import MapPin from './MapPin'
-import ImageButton from './ImageButton'
-import { center_map } from '../Assets/Images'
+import ActionButton from './ActionButton'
+
 import padding from '../Styles/Padding'
+import colors from '../Styles/Colors'
+import { center_map } from '../Assets/Images'
 
 const pinHeight = 114
 const pinWidth = 86
@@ -17,6 +19,7 @@ const pinPadding = 8
 interface IProps extends ViewProps {
   items: MapPointModel[]
   renderCallout: (id: string) => React.JSX.Element | null
+  onCalloutPress: (id: string) => void
   showCallout: boolean
 }
 
@@ -30,8 +33,8 @@ class MapWrapper extends Component<IProps, IState> {
   private mapIsReady: boolean = false
   private mapDidLayout: boolean = false
 
-  private mapWidth: number = 0
-  private mapHeight: number = 0
+  // private mapWidth: number = 0
+  // private mapHeight: number = 0
 
   constructor(props: IProps) {
     super(props)
@@ -43,12 +46,12 @@ class MapWrapper extends Component<IProps, IState> {
   public render() {
     const { items, showCallout, ...viewProps } = this.props
 
-    return <View {...viewProps} collapsable={false}
-      onLayout={(event: any) => {
+    return <View {...viewProps} collapsable={false}>
+      {/* onLayout={(event: any) => {
         this.mapWidth = event.nativeEvent.layout.width
         this.mapHeight = event.nativeEvent.layout.height
         this.centerMap()
-      }}>
+      }}> */}
       <MapView
         collapsable={false}
         style={viewProps.style}
@@ -84,6 +87,7 @@ class MapWrapper extends Component<IProps, IState> {
                 x: 0,
                 y: -pinHeight * pinScale / 2.0,
               }}
+              onCalloutPress={() => { this.props.onCalloutPress(item.id) }}
             >
               <MapPin
                 style={styles.pin}
@@ -97,13 +101,14 @@ class MapWrapper extends Component<IProps, IState> {
                 <View style={styles.calloutContainer}>
                   {this.props.renderCallout(item.id)}
                 </View>
-              </Callout>}
+              </Callout>}              
             </Marker>
           })
         }
       </MapView>
-      <ImageButton
+      <ActionButton
         source={center_map}
+        contentStyle={{tintColor: '#DE307C'}}
         onPress={() => { if (this.mapRef.current) { this.centerMap() } }}
         style={styles.centerButton}
       />
@@ -204,7 +209,7 @@ class MapWrapper extends Component<IProps, IState> {
       right: pinWidth * pinScale,
       bottom: 0.5 * pinHeight * pinScale
     }
-    console.log(`*** Map:fitToItems: coordinates=${JSON.stringify(coordinates)} edgePadding=${JSON.stringify(edgePadding)}`)
+    // console.log(`*** Map:fitToItems: coordinates=${JSON.stringify(coordinates)} edgePadding=${JSON.stringify(edgePadding)}`)
     this.mapRef.current!.fitToCoordinates(coordinates, { edgePadding, animated: true })
   }
 }
@@ -230,7 +235,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    padding: 0
+    padding: 0,
   },
   calloutContent: {
     textAlign: 'left'
@@ -242,6 +247,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: padding.half,
     right: padding.half,
-    zIndex: 1000
+    zIndex: 1000,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'white',
+    flex: 1,
+    justifyContent: 'center'
+    
   }
 })

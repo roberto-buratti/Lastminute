@@ -14,7 +14,7 @@ export default class ServiceManager implements IServiceManager {
 
     public async getHotels(): Promise<HotelModel[]> {
         let result = await this._networkManager.getHotels();
-        console.log(`*** ServiceManager:getHotels:result=${JSON.stringify(result)}`);
+        console.log(`*** ServiceManager:getHotels: result=${JSON.stringify(result)}`);
         let hotels = result.map((json: any) => {
             return HotelModel.fromJSON(json)
         })

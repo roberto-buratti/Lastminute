@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { StyleProp, StyleSheet, View, ImageStyle, Image, ImageProps, ImageSourcePropType } from 'react-native'
 
-import { pin, image_not_available } from '../Assets/Images'
+import SmartImage from './SmartImage'
+
+import { pin } from '../Assets/Images'
 
 interface IProps extends ImageProps {
   style?: StyleProp<ImageStyle>
@@ -32,7 +34,7 @@ export default class MapPin extends React.Component<IProps, IState> {
     return <View style={style}>
       <Image style={styles.background} source={pin} defaultSource={pin}/>
       <View style={styles.avatar}>
-        <Image
+        <SmartImage
           key={`${source}`}
           source={source}
           style={{
@@ -42,10 +44,6 @@ export default class MapPin extends React.Component<IProps, IState> {
             width: width,
             height:height
           }}
-          onError={(event)=>{
-            console.log(`*** MapPin:Image.onError: got error for source=${JSON.stringify(source)}`, JSON.stringify(event.nativeEvent))
-            this.setState({source: image_not_available})
-          }}               
         />
       </View>
     </View>

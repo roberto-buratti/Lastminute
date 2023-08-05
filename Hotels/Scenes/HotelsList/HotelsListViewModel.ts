@@ -3,14 +3,12 @@ import { EventEmitter } from "events";
 
 import HotelModel from "../../Models/HotelModel";
 
-import IServiceFactory from "../../Services/Interfaces/IServiceFactory";
+import IServiceFactory from "../../Services/Interfaces/IServiceFactory"
 
 import BaseViewModel from "../BaseViewModel";
-import IHotelsViewModel, { HotelsViewModelEvents } from "./IHotelsViewModel"
-import IHotelDetailsViewModel from "../HotelDetails/IHotelDetailsViewModel"
-import IBaseViewModel from "../IBaseViewModel";
+import IHotelsListViewModel, { HotelsViewModelEvents } from "./IHotelsListViewModel"
 
-export default class HotelsViewModel extends BaseViewModel implements IHotelsViewModel {
+export default class HotelsListViewModel extends BaseViewModel implements IHotelsListViewModel {
   private _hotels: HotelModel[] = []
   private _events: EventEmitter = new EventEmitter()
 
@@ -22,10 +20,6 @@ export default class HotelsViewModel extends BaseViewModel implements IHotelsVie
 
   public get events(): EventEmitter {
     return this._events
-  }
-
-  public get title(): string {
-    return "Hotels"
   }
 
   public get hotels(): HotelModel[] {
@@ -59,12 +53,6 @@ export default class HotelsViewModel extends BaseViewModel implements IHotelsVie
         this._events.emit(HotelsViewModelEvents.isLoading, false)
       }, 1000)
     })
-  }
-
-  hotelDetailsViewModel(hotel: HotelModel): IHotelDetailsViewModel {
-    const viewModel = this._serviceFactory.hotelDetailsViewModel(hotel)
-    this._serviceFactory.pushViewModel(viewModel)
-    return viewModel
   }
 
 }

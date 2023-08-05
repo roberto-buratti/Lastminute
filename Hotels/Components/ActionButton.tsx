@@ -1,26 +1,29 @@
 import * as React from 'react'
-import { Image, StyleSheet, TouchableOpacity, View, Animated, ImageSourcePropType, ViewStyle, ImageStyle, Text, ViewProps } from 'react-native'
+import { Image, StyleSheet, TouchableOpacity, View, Animated, ImageSourcePropType, ViewStyle, ImageStyle, Text, ViewProps, TextStyle } from 'react-native'
 
-interface IImageButtonProps extends ViewProps {
-  source: ImageSourcePropType
+import colors from '../Styles/Colors'
+
+interface IActionButtonProps extends ViewProps {
+  source?: ImageSourcePropType
+  title?: string
   onPress: () => void
   onLongPress?: () => void
   style?: ViewStyle
-  imageStyle?: ImageStyle
+  contentStyle?: ImageStyle | TextStyle
   disabled?: boolean
   pulse?: boolean
   badge?: string
 }
 
-interface IImageButtonState {
+interface IActionButtonState {
   fade: Animated.Value
 }
 
-export default class ImageButton extends React.Component<IImageButtonProps, IImageButtonState> {
+export default class ActionButton extends React.Component<IActionButtonProps, IActionButtonState> {
 
   private pulseAnimation?: Animated.CompositeAnimation
 
-  public constructor(props: IImageButtonProps) {
+  public constructor(props: IActionButtonProps) {
     super(props)
     this.state = {
       fade: new Animated.Value(0), // Initial value for fade pulsing: 0
@@ -36,7 +39,7 @@ export default class ImageButton extends React.Component<IImageButtonProps, IIma
     }
   }
 
-  public componentDidUpdate(prevProps: IImageButtonProps) {
+  public componentDidUpdate(prevProps: IActionButtonProps) {
     if (this.props.pulse !== prevProps.pulse) {
       const { pulse } = this.props
       if (pulse) {
@@ -52,12 +55,12 @@ export default class ImageButton extends React.Component<IImageButtonProps, IIma
   }
 
   public render() {
-    const { source, onPress, style, imageStyle, onLongPress, disabled } = this.props
+    const { source, title, onPress, style, contentStyle, onLongPress, disabled } = this.props
     const opacity = (disabled ? 0.5 : 1.0)
     const { fade } = this.state
 
 
-    // It seems that TouchableOpacity always needs to have child View component.
+    // It seems that TouchableOpacity always needs to have a child View component.
     // So a component that composes a View isn't enough.
     // This is why we add a simple <View> outside of the <Animated.View>.
     return (<TouchableOpacity
@@ -68,7 +71,8 @@ export default class ImageButton extends React.Component<IImageButtonProps, IIma
     >
     <View>
       <Animated.View style={{ opacity: fade }}>
-        <Image source={source} style={[imageStyle, { alignSelf:'center' }]}/>
+        {source && <Image source={source} style={[{tintColor: colors.lastminute}, contentStyle as ImageStyle, { alignSelf: 'center' }]}/>}
+        {title && <Text style={[{backgroundColor: colors.lastminute}, contentStyle as TextStyle, { alignSelf: 'center' }]}>{title}</Text>}
         { this.props.children
           ? <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
             {this.props.children}

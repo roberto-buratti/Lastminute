@@ -29,7 +29,7 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
   }
 
   private scrollView = React.createRef<FlatList<any>>()
-  private shouldIgnoreScroll = false
+  private isDragging = false
   private resizeTimeout: NodeJS.Timeout | undefined = undefined
 
   public render() {
@@ -98,45 +98,45 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
       }}
       onContentSizeChange={(w, h) => {
         if (this.scrollView.current) {
-          this.scrollView.current.scrollToOffset({ animated: true, offset: h / 4 })
+          this.scrollView.current.scrollToOffset({ animated: true, offset: h / 5 })
         }
       }}
       onScrollBeginDrag={(e) => {
-        this.shouldIgnoreScroll = false
+        this.isDragging = true
       }}
       onScrollEndDrag={(e) => {
-        const scrollOffset = e.nativeEvent.targetContentOffset ? e.nativeEvent.targetContentOffset.y : undefined
-        if (scrollOffset) {
-          this.shouldIgnoreScroll = true  // we got `targetContentOffset`, so we can ignore any subsequent scroll event ;)
-          if (this.resizeTimeout) {
-            clearTimeout(this.resizeTimeout)
-            this.resizeTimeout = undefined
-          }
-          if (scrollOffset < this.state.scrollOffset) {
-            // if we are scrolling down (so enlarging the parallax view) resize it immediately (to make it visible while scrolling)
+        this.isDragging = false
+        const scrollOffset = e.nativeEvent.targetContentOffset ? e.nativeEvent.targetContentOffset.y : e.nativeEvent.contentOffset.y
+        if (this.resizeTimeout) {
+          clearTimeout(this.resizeTimeout)
+          this.resizeTimeout = undefined
+        }
+        if (scrollOffset < this.state.scrollOffset) {
+          // if we are scrolling down (so enlarging the parallax view) resize it immediately (to make it visible while scrolling)
+          this.setState({ scrollOffset: scrollOffset })
+        } else if (scrollOffset > this.state.scrollOffset) {
+          // if we are scrolling up (so reducing the parallax view) resize it after a small delay (to avoid flickering)
+          this.resizeTimeout = setTimeout(() => {
             this.setState({ scrollOffset: scrollOffset })
-          } else if (scrollOffset > this.state.scrollOffset) {
-            // if we are scrolling up (so reducing the parallax view) resize it after a small delay (to prevent flickering)
-            this.resizeTimeout = setTimeout(() => {
-              this.setState({ scrollOffset: scrollOffset })
-            }, 1000)
-          }
+          }, 1000)
         }
       }}
       onScroll={(e) => {
         const scrollOffset = e.nativeEvent.targetContentOffset ? e.nativeEvent.targetContentOffset.y : e.nativeEvent.contentOffset.y
-        if (!this.shouldIgnoreScroll && this.state.scrollOffset != scrollOffset) {
+        if (this.isDragging) {
           if (this.resizeTimeout) {
             clearTimeout(this.resizeTimeout)
             this.resizeTimeout = undefined
           }
-         this.setState({ scrollOffset: scrollOffset })
+          if (scrollOffset != this.state.scrollOffset) {
+            this.setState({ scrollOffset: scrollOffset })
+          }
         }
         if (flatListProps.onScroll) { flatListProps.onScroll(e) }
       }}
       onMomentumScrollEnd={(e) => {
+        this.isDragging = false
         const scrollOffset = e.nativeEvent.contentOffset.y
-        this.shouldIgnoreScroll = false
         if (scrollOffset != this.state.scrollOffset) {
           if (this.resizeTimeout) {
             clearTimeout(this.resizeTimeout)
@@ -150,7 +150,7 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
 
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: padding.triple,

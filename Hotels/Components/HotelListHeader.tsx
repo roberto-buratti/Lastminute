@@ -2,13 +2,14 @@ import * as React from 'react'
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
 import Popover from 'react-native-popover-view';
 
-import ImageButton from './ImageButton'
+import ActionButton from './ActionButton'
 import FilterAndSortingDialog from './FilterAndSortingDialog';
 
 import * as copy from '../Assets/Copy'
 import padding from '../Styles/Padding'
 import { filter, sort, refresh } from '../Assets/Images'
 import colors from '../Styles/Colors'
+import { pad } from 'lodash';
 
 interface IProps {
   isRefreshing: boolean
@@ -40,7 +41,7 @@ export default class HotelListHeader extends React.Component<IProps, IState> {
       <View style={styles.horizontalContainer}>
         <View style={styles.leftButtonBar}>
           <View ref={this.filterButtonRef}>
-            <ImageButton            
+            <ActionButton            
               source={filter}
               onPress={() => this.setState({isFilterPopoverVisibile: true})}
               disabled={isRefreshing}
@@ -48,7 +49,7 @@ export default class HotelListHeader extends React.Component<IProps, IState> {
             />
           </View>
           <View>
-            <ImageButton
+            <ActionButton
               source={sort}
               onPress={onDidTapSort}
               disabled={isRefreshing}
@@ -56,13 +57,10 @@ export default class HotelListHeader extends React.Component<IProps, IState> {
             />
           </View>
         </View>
-        <Text style={{...styles.title}}>
-          {copy.getString('hotels_list_title')}
-        </Text>
         <View style={styles.rightButtonBar}>
           {isRefreshing
             ? <ActivityIndicator animating={true} size="small" style={styles.activity} color={colors.grey}/>
-            : <ImageButton
+            : <ActionButton
               source={refresh}
               onPress={onDidTapRefresh}
               disabled={isRefreshing}
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    width: '25%'
+    width: '25%',
   },
   rightButtonBar: {
     flex: 1,
@@ -111,7 +109,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   activity: {
-    paddingRight: padding.quarter,
+    paddingHorizontal: padding.onehalf,
     width: 35,
     height: 35,
   },

@@ -1,5 +1,5 @@
 {
-  "hotels_list_title": {
+  "hotels_list_scene_title": {
     "en": "Hotels",
     "it": "Alberghi"
   },
@@ -11,8 +11,20 @@
     "en": "Rating",
     "it": "Valutazione"
   },
+  "check-in": {
+    "en": "Check-In",
+    "it": "Check-In"
+  },
+  "check-out": {
+    "en": "Check-out",
+    "it": "Check-out"
+  },
   "filter_and_sorting_title": {
     "en": "Filter & Sorting",
     "it": "Filtri & Ordinamento"
+  },
+  "book_now": {
+    "en": "Book now",
+    "it": "Prenota subito"
   }
 }

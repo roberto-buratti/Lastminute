@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native'
 
+import SmartImage from './SmartImage'
+
 import * as copy from '../Assets/Copy'
 import padding from '../Styles/Padding'
 import shadow from '../Styles/Shadow'
@@ -17,7 +19,7 @@ interface IProps {
   hotel: HotelModel
   isLoading: boolean
   mode: HotelListItemMode
-  onDidTapItem: () => void
+  onDidTapItem?: () => void
   style: any
 }
 
@@ -44,7 +46,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
           </View>
           <View style={styles.detailsRow}>
             <Text style={{}}>
-              {hotel.location.address} ({hotel.location.city})
+              {hotel.location.address}, {hotel.location.city}
             </Text>
           </View>
           <View style={styles.detailsRow}>
@@ -59,12 +61,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
           </View>
           <View style={styles.detailsRow}>
             <Text style={{}}>
-              {hotel.location.address}
-            </Text>
-          </View>
-          <View style={styles.detailsRow}>
-            <Text style={{}}>
-              {hotel.location.city}
+              {hotel.location.address}, {hotel.location.city}
             </Text>
           </View>
           <View style={styles.detailsRow}>
@@ -80,7 +77,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
         </View>
 
     const stars = Array(5).fill(0).map((_, index) => {
-      const value = Math.round(hotel.userRating * 5.0 / 10.0)
+      const value = Math.round(hotel.stars)
       return index >= value 
         ? <Image key={index} source={star_empty} style={styles.star}/>
         : <Image key={index} source={star_full} style={styles.star}/>
@@ -88,13 +85,9 @@ export default class HotelListItem extends React.Component<IProps, IState> {
 
     return <TouchableOpacity onPress={onDidTapItem} disabled={isLoading} style={{...styles.container, ...styles.row, ...style, opacity: isLoading ? 0.2 : 1.0}}>
       <View style={styles.column}>
-        <Image
+        <SmartImage
           style={styles.avatar}
           source={this.state.image}
-          onError={(event)=>{
-            console.log(`*** HotelListItem:Image.onError: got error for uri=${hotel.gallery[0]}`, JSON.stringify(event.nativeEvent))
-            this.setState({image: image_not_available})
-          }}
         />
         <View style={{...styles.row, paddingTop: padding.quarter}}>
           {stars}
@@ -102,7 +95,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
       </View>
       {details}
       <View style={styles.indicators}>
-        <Image source={chevron_right} />
+        <Image source={chevron_right} style={{tintColor: colors.lastminute}}/>
       </View>
     </TouchableOpacity>
   }
@@ -127,7 +120,7 @@ const styles = StyleSheet.create({
   },
   star: {
     width: 10,
-    height: 10
+    height: 10,
   },
   avatar: {
     width: 50, 

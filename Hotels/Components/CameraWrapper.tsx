@@ -8,7 +8,7 @@ import Permissions, { PERMISSIONS, PermissionStatus } from 'react-native-permiss
 import { photos, take_photo, camera_front } from '../Assets/Images'
 import IImageProps from './Interfaces/IImageProps'
 
-import ImageButton from './ImageButton'
+import ActionButton from './ActionButton'
 
 export interface ICamerWrapperProps {
   onPictureSelect: (image: IImageProps) => void
@@ -46,17 +46,17 @@ export default class Camera extends React.Component<ICamerWrapperProps, ICamerWr
         />
         {hideControls ? null : <View style={styles.buttons}>
           <View style={styles.left}>
-            <ImageButton
+            <ActionButton
               source={photos}
               onPress={this.goToLibrary}
             />
           </View>
-          <ImageButton
+          <ActionButton
             source={take_photo}
             onPress={this.takePicture}
           />
           <View style={styles.right}>
-            <ImageButton
+            <ActionButton
               source={camera_front}
               onPress={() => this.setState(state => ({ frontCamera: !state.frontCamera }))}
             />

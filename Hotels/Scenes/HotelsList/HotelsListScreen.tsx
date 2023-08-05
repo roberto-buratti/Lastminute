@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
   
-import IHotelsViewModel, { HotelsViewModelEvents } from './IHotelsViewModel'
+import IHotelsListViewModel, { HotelsViewModelEvents } from './IHotelsListViewModel'
 import MapPointModel from '../../Models/MapPoint'
 
 import ParallaxScrollView from '../../Components/ParallaxScrollView'
@@ -15,7 +15,7 @@ import { image_not_available } from '../../Assets/Images'
 import HotelModel from '../../Models/HotelModel'
 
 interface IProps {
-  viewModel: IHotelsViewModel
+  viewModel: IHotelsListViewModel
   navigation: any
 }
 
@@ -25,7 +25,7 @@ interface IState {
 
 const headerHeight = 75
 
-class HotelsScreen extends Component<IProps, IState> {
+class HotelsListScreen extends Component<IProps, IState> {
   public state: IState = {
     isLoading: false,
   }
@@ -37,7 +37,6 @@ class HotelsScreen extends Component<IProps, IState> {
 
     const { viewModel, navigation } = this.props
 
-    console.log(`*** HotelsScreen:componentDidMount: viewModel=${JSON.stringify(viewModel)} navigation=${JSON.stringify(navigation)}`)
     viewModel.events.addListener(HotelsViewModelEvents.isLoading, (value) => {
       this.setState({ isLoading: value })
     })    
@@ -62,11 +61,6 @@ class HotelsScreen extends Component<IProps, IState> {
 
     return <ParallaxScrollView
       ref={this.parallaxView}
-      // onScroll={(e) => {
-      //   if (this.mapRef.current) {
-      //     this.mapRef.current.setContentOffset(e.nativeEvent.contentOffset.y)
-      //   }
-      // }}
       style={styles.container}
       parallaxView={<MapWrapper
         ref={this.mapRef}
@@ -87,10 +81,16 @@ class HotelsScreen extends Component<IProps, IState> {
             isLoading={isLoading}
             mode={HotelListItemMode.tall}
             style={{backgroundColor: colors.transparent}}
-            onDidTapItem={() => { this.onDidSelectHotel(hotel)}}
-        />
+          />
+        }}        
+        showCallout={true}
+        onCalloutPress={(id: string) => {
+          const hotel = viewModel.getHotelById(id)
+          if (!hotel) { 
+            return null
+          }
+          this.onDidSelectHotel(hotel)
         }}
-        showCallout={true}        
       />}
       stickyHeaderView={headerView}
       stickyHeaderHeight={headerHeight}
@@ -112,10 +112,8 @@ class HotelsScreen extends Component<IProps, IState> {
   // MARK: - Private
 
   onDidSelectHotel(hotel: HotelModel) {
-    const { viewModel, navigation } = this.props
-    const hotelDetailsViewModel = viewModel.hotelDetailsViewModel(hotel)
-    console.log(`*** HotelsScreen:onDidSelectHotel: uuid=${JSON.stringify(hotelDetailsViewModel.uuid)}`)
-    navigation.navigate("HotelDetails", { viewModel: hotelDetailsViewModel.uuid })
+    const { navigation } = this.props
+    navigation.navigate("hotel_details_scene", { hotel: hotel })
   }
 }
 
@@ -135,5 +133,5 @@ const styles = StyleSheet.create({
   },
 })
 
-export default HotelsScreen
+export default HotelsListScreen
 

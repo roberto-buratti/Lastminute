@@ -1,20 +1,19 @@
-import IAppViewModel from "./IAppViewModel"
-import BaseViewModel from "./Scenes/BaseViewModel"
-import IHomeViewModel from "./Scenes/Home/IHomeViewModel"
 import IServiceFactory from "./Services/Interfaces/IServiceFactory"
 
+import IAppViewModel from "./IAppViewModel"
+
+import BaseViewModel from "./Scenes/BaseViewModel"
+import IHomeViewModel from "./Scenes/Home/IHomeViewModel"
+import HomeViewModel from "./Scenes/Home/HomeViewModel"
+
 export default class AppViewModel extends BaseViewModel implements IAppViewModel {
-    private _homeViewModel?: IHomeViewModel
 
     constructor(serviceFactory: IServiceFactory) {
         super(serviceFactory)
     }
 
-    public get homeViewModel(): IHomeViewModel {
-        if (!this._homeViewModel) {
-            this._homeViewModel = this._serviceFactory.homeViewModel()
-        }
-        return this._homeViewModel
+    public homeViewModel(): IHomeViewModel {
+        return new HomeViewModel(this._serviceFactory)
     }
 
 }
