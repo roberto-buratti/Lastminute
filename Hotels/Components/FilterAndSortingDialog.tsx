@@ -25,8 +25,7 @@ export default class FilterAndSortingDialog extends React.Component<IProps, ISta
         <Text style={styles.title}>{copy.getString("filter_and_sorting_title")}</Text>
         <View style={{width:'100%',borderBottomColor: colors.veryLightGrey, borderBottomWidth: 1}}/>
       </View>
-    </View>
-    
+    </View>    
   }
 
 }

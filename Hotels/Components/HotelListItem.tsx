@@ -6,7 +6,7 @@ import SmartImage from './SmartImage'
 import * as copy from '../Assets/Copy'
 import padding from '../Styles/Padding'
 import shadow from '../Styles/Shadow'
-import { star_full, star_empty, image_not_available, chevron_right } from '../Assets/Images'
+import { star_full, image_not_available, chevron_right } from '../Assets/Images'
 import colors from '../Styles/Colors'
 import HotelModel from '../Models/HotelModel'
 
@@ -76,11 +76,8 @@ export default class HotelListItem extends React.Component<IProps, IState> {
           </View>
         </View>
 
-    const stars = Array(5).fill(0).map((_, index) => {
-      const value = Math.round(hotel.stars)
-      return index >= value 
-        ? <Image key={index} source={star_empty} style={styles.star}/>
-        : <Image key={index} source={star_full} style={styles.star}/>
+    const stars = Array(hotel.stars).fill(0).map((_, index) => {
+      return <Image key={index} source={star_full} style={styles.star}/>
     })
 
     return <TouchableOpacity onPress={onDidTapItem} disabled={isLoading} style={{...styles.container, ...styles.row, ...style, opacity: isLoading ? 0.2 : 1.0}}>
@@ -89,7 +86,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
           style={styles.avatar}
           source={this.state.image}
         />
-        <View style={{...styles.row, paddingTop: padding.quarter}}>
+        <View style={{...styles.row, paddingTop: padding.quarter, justifyContent: 'center'}}>
           {stars}
         </View>
       </View>

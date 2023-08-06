@@ -120,7 +120,7 @@ class HotelsListScreen extends Component<IProps, IState> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.lightGrey,
+    backgroundColor: colors.darkSlateGrey,
   },
   map: {
     width: '100%',

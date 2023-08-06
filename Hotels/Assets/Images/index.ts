@@ -5,8 +5,7 @@ export const avatar_camera = require('./avatar_camera.png')
 export const center_map = require('./center_map.png') // <a href="https://www.freepik.com/icon/cartography_9084487#fromView=search&term=center+map&page=1&position=16">Icon by VectorPortal</a>
 export const refresh = require('./refresh.png') // <a href="https://www.freepik.com/icon/refresh_2805355#fromView=search&term=refresh+icon&page=1&position=0">Icon by Arkinasi</a>
 export const chevron_right = require('./chevron_right.png')
-export const star_empty = require('./star_empty.png')
-export const star_full = require('./star_full.png')
+export const star_full = require('./star_full.png') // <a href="https://www.freepik.com/icon/star_8443373#fromView=search&term=yellow+star&page=2&position=4">Icon by Icon Hubs</a>
 export const image_not_available = require('./image_not_available.png')
 export const filter = require('./filter.png') // <a href="https://it.freepik.com/icona/filtro_3839020#fromView=search&term=filter&page=1&position=0">Icona di herikus</a>
 export const sort = require('./sort.png') // <a href="https://it.freepik.com/icona/ordinare_2223723#fromView=search&term=sorting&page=1&position=30">Icona di bqlqn</a>

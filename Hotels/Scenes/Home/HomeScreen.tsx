@@ -6,7 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import IHomeViewModel from './IHomeViewModel'
 
 import HotelsListScreen from '../HotelsList/HotelsListScreen'
-import HotelDetailsScreen from '../HotelDetails/HotelDetails'
+import HotelDetailsScreen from '../HotelDetails/HotelDetailsScreen'
 
 import * as copy from '../../Assets/Copy'
 
@@ -37,9 +37,10 @@ export default class HomeScreen extends React.Component<IProps, IState> {
         return <NavigationContainer theme={DefaultTheme}>
             <MainStack.Navigator screenOptions={
                 {
+                    orientation: 'portrait',    // [ROB] disable landscape because the effect isn't pleasant
                     headerBackTitleVisible: false, 
                     headerTintColor: '#DE307C', 
-                    headerTitleStyle: { color: 'black' }
+                    headerTitleStyle: { color: 'black' }                    
                 }}
             >
                 <MainStack.Screen
@@ -52,7 +53,7 @@ export default class HomeScreen extends React.Component<IProps, IState> {
                     component={HotelDetailsScreenComponent}
                     options={({ route }) => { 
                         const hotel = route.params["hotel"]
-                        return { title: hotel.name }
+                        return { title: hotel.name, headerTransparent: true }
                     }}
                 />
             </MainStack.Navigator>

@@ -4,7 +4,7 @@ export default {
   shadow: '#8386A3',
   white: '#FFFFFF',
   veryLightGrey: '#CDCDCD',
-  lightGrey: 'lightGrey',
+  darkSlateGrey: '#2F4F4F',
   midGrey: '#D3D7E0',
   grey: '#7E8494',
   transparent: 'transparent',

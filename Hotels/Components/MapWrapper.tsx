@@ -46,12 +46,8 @@ class MapWrapper extends Component<IProps, IState> {
   public render() {
     const { items, showCallout, ...viewProps } = this.props
 
-    return <View {...viewProps} collapsable={false}>
-      {/* onLayout={(event: any) => {
-        this.mapWidth = event.nativeEvent.layout.width
-        this.mapHeight = event.nativeEvent.layout.height
-        this.centerMap()
-      }}> */}
+    return <View {...viewProps} collapsable={false}
+      onLayout={() => this.centerMap() }>
       <MapView
         collapsable={false}
         style={viewProps.style}
