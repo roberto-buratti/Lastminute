@@ -3,11 +3,19 @@
     "en": "Hotels",
     "it": "Alberghi"
   },
+  "currency": {
+    "en": "Currency",
+    "it": "Valuta"
+  },
   "price": {
     "en": "Price per night",
     "it": "Prezzo per notte"
   },
-  "rating": {
+  "stars": {
+    "en": "Stars",
+    "it": "Categoria"
+  },
+  "user_rating": {
     "en": "Rating",
     "it": "Valutazione"
   },
@@ -19,12 +27,44 @@
     "en": "Check-out",
     "it": "Check-out"
   },
+  "book_now": {
+    "en": "Book now",
+    "it": "Prenota subito"
+  },
   "filter_and_sorting_title": {
     "en": "Filter & Sorting",
     "it": "Filtri & Ordinamento"
   },
-  "book_now": {
-    "en": "Book now",
-    "it": "Prenota subito"
+  "filter_and_sorting_name_placeholder": {
+    "en": "Search by name",
+    "it": "Ricerca per nome"
+  },
+  "filter_and_sorting_order_by": {
+    "en": "Order by",
+    "it": "Ordina per"
+  },
+  "filter_and_sorting_order_by_name": {
+    "en": "Alhpabetically",
+    "it": "Alfabeticamente"
+  },
+  "filter_and_sorting_order_by_stars": {
+    "en": "Stars",
+    "it": "Categoria"
+  },
+  "filter_and_sorting_order_by_user_rating": {
+    "en": "Rating",
+    "it": "Valutazione"
+  },
+  "filter_and_sorting_order_by_price": {
+    "en": "Price per night",
+    "it": "Prezzo per notte"
+  },
+  "filter_and_sorting_submit": {
+    "en": "Show $resultsCount result(s)",
+    "it": "Mostra risultati ($resultsCount)"
+  },
+  "filter_and_sorting_reset": {
+    "en": "Reset Filters",
+    "it": "Reimposta Filtri"
   }
 }

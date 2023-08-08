@@ -1,11 +1,14 @@
-package com.example;
+package it.robertoburatti.hotels;
 
-import com.facebook.react.ReactActivity;
+import com.facebook.react.NavigationActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
-public class MainActivity extends ReactActivity {
+// Manually fixed for react-native-navigation
+// https://wix.github.io/react-native-navigation/docs/installing
+
+public class MainActivity extends NavigationActivity {
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

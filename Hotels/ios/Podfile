@@ -43,9 +43,9 @@ target 'Hotels' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
   
-  permissions_path = '../node_modules/react-native-permissions/ios'
-  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
-  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
+#  permissions_path = '../node_modules/react-native-permissions/ios'
+#  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+#  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 
   target 'HotelsTests' do
     inherit! :complete

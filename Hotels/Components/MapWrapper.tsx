@@ -192,9 +192,10 @@ class MapWrapper extends Component<IProps, IState> {
       console.log(`*** Map:centerMap: map not yet ready, retry later`)
       return
     }
-    setTimeout(()=>{
+    this.forceUpdate(() => {
+      console.log(`*** Map:centerMap: now fitting pins`)
       this.fitToItems()
-    }, 500)
+    })
   }
 
   private async fitToItems() {

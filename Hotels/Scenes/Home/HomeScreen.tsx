@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {NavigationContainer, DefaultTheme} from '@react-navigation/native'
+// import {NavigationContainer, DefaultTheme} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
   
 import IHomeViewModel from './IHomeViewModel'
@@ -9,6 +9,7 @@ import HotelsListScreen from '../HotelsList/HotelsListScreen'
 import HotelDetailsScreen from '../HotelDetails/HotelDetailsScreen'
 
 import * as copy from '../../Assets/Copy'
+import HotelModel from '../../Models/HotelModel'
 
 interface IProps {
     viewModel: IHomeViewModel
@@ -34,7 +35,7 @@ export default class HomeScreen extends React.Component<IProps, IState> {
             return <HotelDetailsScreen viewModel={viewModel.hotelDetailsViewModel(hotel)} navigation={navigation}/>
         }
 
-        return <NavigationContainer theme={DefaultTheme}>
+        return ( //<NavigationContainer theme={DefaultTheme}>
             <MainStack.Navigator screenOptions={
                 {
                     orientation: 'portrait',    // [ROB] disable landscape because the effect isn't pleasant
@@ -52,11 +53,12 @@ export default class HomeScreen extends React.Component<IProps, IState> {
                     name="hotel_details_scene"                
                     component={HotelDetailsScreenComponent}
                     options={({ route }) => { 
-                        const hotel = route.params["hotel"]
+                        const params = route.params
+                        const hotel = (params as ({ [key: string]: any }))["hotel"] as HotelModel
                         return { title: hotel.name, headerTransparent: true }
                     }}
                 />
             </MainStack.Navigator>
-        </NavigationContainer>
+        ) //</NavigationContainer>
     }
 }

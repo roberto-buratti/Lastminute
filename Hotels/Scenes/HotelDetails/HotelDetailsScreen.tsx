@@ -60,7 +60,6 @@ class HotelDetailsScreen extends Component<IProps, IState> {
               loop={sources.length > 1}
               width={carouselWidth}
               height={carouselHeight} 
-              //mode={'parallax'}
               autoPlay={false}
               data={sources}            
               scrollAnimationDuration={200}
@@ -120,7 +119,7 @@ class HotelDetailsScreen extends Component<IProps, IState> {
             <View style={styles.detailsRow}>
               <View style={styles.action}></View>
               <Text style={styles.text}>
-                {copy.getString('rating')}:
+                {copy.getString("user_rating")}:
               </Text>
               <Text style={styles.boldText}>
                 {hotel.userRating}

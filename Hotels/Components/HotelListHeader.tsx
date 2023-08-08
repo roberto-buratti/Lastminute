@@ -1,26 +1,28 @@
 import * as React from 'react'
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native'
-import Popover from 'react-native-popover-view';
+import { Animated, View, StyleSheet, ActivityIndicator, Modal } from 'react-native'
+
+import IHotelsListViewModel from '../Scenes/HotelsList/IHotelsListViewModel'
 
 import ActionButton from './ActionButton'
-import FilterAndSortingDialog from './FilterAndSortingDialog';
+import Fade from './Fade'
+import FilterAndSorting from './FilterAndSorting'
 
-import * as copy from '../Assets/Copy'
 import padding from '../Styles/Padding'
 import { filter, sort, refresh } from '../Assets/Images'
 import colors from '../Styles/Colors'
-import { pad } from 'lodash';
 
 interface IProps {
-  isRefreshing: boolean
-  onDidTapFilter: () => void
-  onDidTapSort: () => void
-  onDidTapRefresh: () => void
+  viewModel: IHotelsListViewModel
+  disabled: boolean
+  onToggleFilterComponent: (status: boolean) => void
 }
 
 interface IState {
-  isFilterPopoverVisibile: boolean
+  isFilterComponentVisibile: boolean
 }
+
+const minHeight = 75
+const maxHeight = 630
 
 export default class HotelListHeader extends React.Component<IProps, IState> {
 
@@ -29,65 +31,73 @@ export default class HotelListHeader extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props)
     this.state = {
-      isFilterPopoverVisibile: false
+      isFilterComponentVisibile: false
     }
   }
 
   public render() {
-    const { isRefreshing, onDidTapFilter, onDidTapSort, onDidTapRefresh } = this.props
+    const { viewModel, disabled, onToggleFilterComponent } = this.props
+    const { isFilterComponentVisibile } = this.state
 
+    const height = isFilterComponentVisibile ? maxHeight : minHeight
 
-    return <View style={styles.container}>
+    return <View style={{...styles.container, height: height}}>
       <View style={styles.horizontalContainer}>
         <View style={styles.leftButtonBar}>
           <View ref={this.filterButtonRef}>
             <ActionButton            
               source={filter}
-              onPress={() => this.setState({isFilterPopoverVisibile: true})}
-              disabled={isRefreshing}
+              onPress={() => {
+                this.setState({isFilterComponentVisibile: !isFilterComponentVisibile}, () => {
+                  onToggleFilterComponent(this.state.isFilterComponentVisibile)
+                }) 
+              }}
+              disabled={disabled}
               style={{...styles.activity}} 
             />
           </View>
           <View>
             <ActionButton
               source={sort}
-              onPress={onDidTapSort}
-              disabled={isRefreshing}
+              onPress={() => { viewModel.reverseSorting() }}
+              disabled={disabled}
               style={{...styles.activity}} 
             />
           </View>
         </View>
         <View style={styles.rightButtonBar}>
-          {isRefreshing
+          {disabled
             ? <ActivityIndicator animating={true} size="small" style={styles.activity} color={colors.grey}/>
             : <ActionButton
               source={refresh}
-              onPress={onDidTapRefresh}
-              disabled={isRefreshing}
+              onPress={() => { viewModel.refresh() }}
+              disabled={disabled}
               style={{...styles.activity}}
             />
           }
         </View>
       </View>
-      <Popover 
-        from={this.filterButtonRef} 
-        isVisible={this.state.isFilterPopoverVisibile} 
-        onRequestClose={() => this.setState({isFilterPopoverVisibile: false})}
-      >
-        <FilterAndSortingDialog/>
-      </Popover>
+      <FilterAndSorting 
+        viewModel={viewModel} 
+        disabled={disabled}
+        style={{...styles.filterAndSorting, display: isFilterComponentVisibile ? 'flex' : 'none'}}
+        onSubmit={() => {
+          this.setState({isFilterComponentVisibile: false}, () => {
+            onToggleFilterComponent(this.state.isFilterComponentVisibile)
+          }) 
+        }}
+      />
     </View>
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: padding.half,
     paddingBottom: padding.full,
+    minHeight: minHeight,
   },
   horizontalContainer: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -113,4 +123,8 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
   },
+  filterAndSorting: {
+    width: '100%',
+    height: maxHeight - minHeight,
+  }
 })

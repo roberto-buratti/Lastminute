@@ -16,9 +16,11 @@ export default class PriceModel {
   }
 
   static fromJSON(json: any) {
+    // [ROB] randomly assign a different currency just to show visual effects
+    const currency = Math.random() < 0.3 ? "USD" : Math.random() < 0.3 ? "GBP" : json.currency
     return new PriceModel(
       json.value,
-      json.currency,
+      currency,
     )
   }
   

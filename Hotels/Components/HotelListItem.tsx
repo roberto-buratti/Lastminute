@@ -17,7 +17,7 @@ export enum HotelListItemMode {
 
 interface IProps {
   hotel: HotelModel
-  isLoading: boolean
+  disabled: boolean
   mode: HotelListItemMode
   onDidTapItem?: () => void
   style: any
@@ -37,7 +37,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
   }
 
   public render() {
-    const { hotel, isLoading, mode, style, onDidTapItem } = this.props
+    const { hotel, disabled, mode, style, onDidTapItem } = this.props
 
     const details = mode == HotelListItemMode.wide 
       ? <View style={{...styles.details}}>
@@ -51,7 +51,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
           </View>
           <View style={styles.detailsRow}>
             <Text style={{}}>
-              {copy.getString('rating')}: {hotel.userRating} • {copy.getString('price')}: {hotel.price.description} 
+              {copy.getString("user_rating")}: {hotel.userRating} • {copy.getString('price')}: {hotel.price.description} 
             </Text>
           </View>
         </View>
@@ -66,7 +66,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
           </View>
           <View style={styles.detailsRow}>
             <Text style={{}}>
-              {copy.getString('rating')}: {hotel.userRating}
+              {copy.getString("user_rating")}: {hotel.userRating}
             </Text>
           </View>
           <View style={styles.detailsRow}>
@@ -80,7 +80,7 @@ export default class HotelListItem extends React.Component<IProps, IState> {
       return <Image key={index} source={star_full} style={styles.star}/>
     })
 
-    return <TouchableOpacity onPress={onDidTapItem} disabled={isLoading} style={{...styles.container, ...styles.row, ...style, opacity: isLoading ? 0.2 : 1.0}}>
+    return <TouchableOpacity onPress={onDidTapItem} disabled={disabled} style={{...styles.container, ...styles.row, ...style, opacity: disabled ? 0.2 : 1.0}}>
       <View style={styles.column}>
         <SmartImage
           style={styles.avatar}

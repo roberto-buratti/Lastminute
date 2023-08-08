@@ -21,6 +21,7 @@ interface IProps {
 
 interface IState {
     isLoading: boolean
+    isFilterComponentVisibile: boolean
 }
 
 const headerHeight = 75
@@ -28,6 +29,7 @@ const headerHeight = 75
 class HotelsListScreen extends Component<IProps, IState> {
   public state: IState = {
     isLoading: false,
+    isFilterComponentVisibile: false
   }
 
   private parallaxView = React.createRef<ParallaxScrollView>()
@@ -49,14 +51,18 @@ class HotelsListScreen extends Component<IProps, IState> {
 
   public render() {
     const { viewModel } = this.props
-    const { isLoading } = this.state
+    const { isLoading, isFilterComponentVisibile } = this.state
 
     const hotels = viewModel.hotels
 
     const headerView = <HotelListHeader
-      onDidTapSort={() => { viewModel.reverseSorting() }}
-      onDidTapRefresh={() => { viewModel.refresh() }}
-      isRefreshing={isLoading}      
+      viewModel={viewModel}
+      disabled={isLoading}
+      onToggleFilterComponent={(visible: boolean) => {
+        this.setState({ isFilterComponentVisibile: visible }, () => {
+          this.parallaxView.current?.redraw()
+        })        
+      }}
     />
 
     return <ParallaxScrollView
@@ -78,7 +84,7 @@ class HotelsListScreen extends Component<IProps, IState> {
           }
           return <HotelListItem
             hotel={hotel}
-            isLoading={isLoading}
+            disabled={isLoading || isFilterComponentVisibile}
             mode={HotelListItemMode.tall}
             style={{backgroundColor: colors.transparent}}
           />
@@ -93,14 +99,13 @@ class HotelsListScreen extends Component<IProps, IState> {
         }}
       />}
       stickyHeaderView={headerView}
-      stickyHeaderHeight={headerHeight}
       data={hotels.map((hotel, index) => ({key: `${index}`, hotel}))}
       renderItem={(data) => {
         return <HotelListItem
           key={data.item.hotel.id}
           hotel={data.item.hotel}
           style={{backgroundColor: colors.white}}
-          isLoading={isLoading}
+          disabled={isLoading || isFilterComponentVisibile}
           mode={HotelListItemMode.wide}
           onDidTapItem={() => { this.onDidSelectHotel(data.item.hotel)}}
         />

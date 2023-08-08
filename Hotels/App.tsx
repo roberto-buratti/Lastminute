@@ -11,6 +11,7 @@ import {
   View,
 } from 'react-native';
 
+import {NavigationContainer, DefaultTheme} from '@react-navigation/native'
 
 import ServiceFactory from './Services/ServiceFactory'
 import AppViewModel from './AppViewModel'
@@ -22,9 +23,12 @@ class App extends React.Component {
 
   public render() {
     return (
-        <View style={{width:'100%', height:'100%'}}>
-          <HomeScreen viewModel={this._viewModel.homeViewModel()}/>
-        </View>
+      <NavigationContainer theme={DefaultTheme}>
+        <HomeScreen viewModel={this._viewModel.homeViewModel()}/>
+      </NavigationContainer>
+        // <View style={{width:'100%', height:'100%'}}>
+        //   <HomeScreen viewModel={this._viewModel.homeViewModel()}/>
+        // </View>
     );
   } 
 }
