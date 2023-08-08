@@ -1,6 +1,6 @@
 export default class NetworkManager {
-  public jwtToken?: string
-  public refreshToken?: string
+  // public jwtToken?: string
+  // public refreshToken?: string
 
   public async getHotels(): Promise<any[]> {
     const url = `https://run.mocky.io/v3/eef3c24d-5bfd-4881-9af7-0b404ce09507`;

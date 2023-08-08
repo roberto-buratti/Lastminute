@@ -1,14 +1,21 @@
 package it.robertoburatti.hotels;
 
-import com.facebook.react.NavigationActivity;
+import android.os.Bundle;
+
+import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
-// Manually fixed for react-native-navigation
-// https://wix.github.io/react-native-navigation/docs/installing
+// [ROB] Manually fixed for react-navigation/native
+// https://reactnavigation.org/docs/getting-started/
 
-public class MainActivity extends NavigationActivity {
+public class MainActivity extends ReactActivity {
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule

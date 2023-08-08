@@ -1,7 +1,3 @@
-export const camera_front = require('./camera_front.png')
-export const photos = require('./photos.png')
-export const take_photo = require('./take_photo.png')
-export const avatar_camera = require('./avatar_camera.png')
 export const center_map = require('./center_map.png') // <a href="https://www.freepik.com/icon/cartography_9084487#fromView=search&term=center+map&page=1&position=16">Icon by VectorPortal</a>
 export const refresh = require('./refresh.png') // <a href="https://www.freepik.com/icon/refresh_2805355#fromView=search&term=refresh+icon&page=1&position=0">Icon by Arkinasi</a>
 export const chevron_right = require('./chevron_right.png')

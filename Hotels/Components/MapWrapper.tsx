@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Dimensions, View, StyleSheet, ViewProps } from 'react-native'
-import MapView, { Region, Marker, Callout } from 'react-native-maps'
+import { Dimensions, View, StyleSheet, ViewProps, Image } from 'react-native'
+import MapView, { Region, Marker, MapMarker, Callout } from 'react-native-maps'
 
 import MapPointModel from '../Models/MapPoint'
 
@@ -8,8 +8,7 @@ import MapPin from './MapPin'
 import ActionButton from './ActionButton'
 
 import padding from '../Styles/Padding'
-import colors from '../Styles/Colors'
-import { center_map } from '../Assets/Images'
+import { center_map, image_not_available } from '../Assets/Images'
 
 const pinHeight = 114
 const pinWidth = 86
@@ -28,13 +27,10 @@ interface IState {
 
 class MapWrapper extends Component<IProps, IState> {
   private mapRef = React.createRef<MapView>()
-  private markerRef = React.createRef<Marker>()
+  private markerRef = React.createRef<MapMarker>()
   
   private mapIsReady: boolean = false
   private mapDidLayout: boolean = false
-
-  // private mapWidth: number = 0
-  // private mapHeight: number = 0
 
   constructor(props: IProps) {
     super(props)
@@ -53,7 +49,7 @@ class MapWrapper extends Component<IProps, IState> {
         style={viewProps.style}
         ref={this.mapRef}
         initialRegion={this.initialRegion()}
-        // sometimes onMapReady() doesn't work properly on android...
+        // [ROB] sometimes onMapReady() doesn't work properly on android...
         onLayout={() => { 
           this.onMapReady(false, true)
         }}
@@ -69,15 +65,12 @@ class MapWrapper extends Component<IProps, IState> {
             return <Marker
               key={item.id}
               ref={this.markerRef}
-              // google-maps bug? see https://github.com/react-native-community/react-native-maps/issues/2082
+              // [ROB] google-maps bug? see https://github.com/react-native-community/react-native-maps/issues/2082
               tracksViewChanges={false}
               tracksInfoWindowChanges={false}
               coordinate={{
                 latitude: item.location.latitude,
                 longitude: item.location.longitude,
-              }}
-              onPress={() => {
-                // onAgentPress(point)
               }}
               centerOffset={{
                 x: 0,
@@ -122,7 +115,6 @@ class MapWrapper extends Component<IProps, IState> {
     if (this.mapIsReady && this.mapDidLayout) {
       if (this.mapRef.current) {
         this.forceUpdate(() => {
-          // console.log(`*** Map:onMapReady: now centering map`)
           this.centerMap()
         })
       }
@@ -136,11 +128,8 @@ class MapWrapper extends Component<IProps, IState> {
     if (this.props.items.length == 0) {
       return []
     }
-    // console.log(`*** Map:coordinatesForItems: items=${this.props.items.length} => ${JSON.stringify(this.props.items)}`)
     const locations = this.props.items.map((i) => i.location)
-    // console.log(`*** Map:coordinatesForItems: locations=${JSON.stringify(locations)}`)
     const coordinates = locations.map((l) => { return { latitude: l.latitude, longitude: l.longitude }})
-    // console.log(`*** Map:coordinatesForItems: coordinates=${JSON.stringify(coordinates)}`)
     const avgLat = coordinates.map(c => c.latitude).reduce((sum, value) => { return sum + value }, 0) / coordinates.length
     const avgLon = coordinates.map(c => c.longitude).reduce((sum, value) => { return sum + value }, 0) / coordinates.length
     const minLatitudeDelta = 1.0 / 110.574 // not less than 1 km
@@ -193,7 +182,6 @@ class MapWrapper extends Component<IProps, IState> {
       return
     }
     this.forceUpdate(() => {
-      console.log(`*** Map:centerMap: now fitting pins`)
       this.fitToItems()
     })
   }
@@ -206,8 +194,7 @@ class MapWrapper extends Component<IProps, IState> {
       right: pinWidth * pinScale,
       bottom: 0.5 * pinHeight * pinScale
     }
-    // console.log(`*** Map:fitToItems: coordinates=${JSON.stringify(coordinates)} edgePadding=${JSON.stringify(edgePadding)}`)
-    this.mapRef.current!.fitToCoordinates(coordinates, { edgePadding, animated: true })
+    this.mapRef.current?.fitToCoordinates(coordinates, { edgePadding, animated: true })
   }
 }
 

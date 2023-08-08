@@ -14,10 +14,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-Hotels-HotelsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-Hotels-HotelsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		D492AFF829C32CC5008B9DFC /* index.js in Resources */ = {isa = PBXBuildFile; fileRef = D492AFF229C32CC5008B9DFC /* index.js */; };
-		D492AFF929C32CC5008B9DFC /* NativeHelperBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = D492AFF429C32CC5008B9DFC /* NativeHelperBridge.m */; };
-		D492AFFA29C32CC5008B9DFC /* NativeHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = D492AFF529C32CC5008B9DFC /* NativeHelper.swift */; };
-		D492AFFB29C32CC5008B9DFC /* index.d.ts in Resources */ = {isa = PBXBuildFile; fileRef = D492AFF729C32CC5008B9DFC /* index.d.ts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,11 +43,6 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-Hotels.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Hotels.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Hotels/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Hotels-HotelsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hotels-HotelsTests.release.xcconfig"; path = "Target Support Files/Pods-Hotels-HotelsTests/Pods-Hotels-HotelsTests.release.xcconfig"; sourceTree = "<group>"; };
-		D492AFF229C32CC5008B9DFC /* index.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = index.js; sourceTree = "<group>"; };
-		D492AFF429C32CC5008B9DFC /* NativeHelperBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeHelperBridge.m; sourceTree = "<group>"; };
-		D492AFF529C32CC5008B9DFC /* NativeHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeHelper.swift; sourceTree = "<group>"; };
-		D492AFF629C32CC5008B9DFC /* NativeHelperBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NativeHelperBridge.h; sourceTree = "<group>"; };
-		D492AFF729C32CC5008B9DFC /* index.d.ts */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = index.d.ts; sourceTree = "<group>"; };
 		D492B00B29C32FA4008B9DFC /* Hotels-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hotels-Bridging-Header.h"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -96,7 +87,6 @@
 		13B07FAE1A68108700A75B9A /* Hotels */ = {
 			isa = PBXGroup;
 			children = (
-				D492AFF029C32CC5008B9DFC /* Native */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -158,35 +148,6 @@
 				89C6BE57DB24E9ADA2F236DE /* Pods-Hotels-HotelsTests.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		D492AFF029C32CC5008B9DFC /* Native */ = {
-			isa = PBXGroup;
-			children = (
-				D492AFF129C32CC5008B9DFC /* NativeHelper */,
-			);
-			name = Native;
-			path = ../Native;
-			sourceTree = "<group>";
-		};
-		D492AFF129C32CC5008B9DFC /* NativeHelper */ = {
-			isa = PBXGroup;
-			children = (
-				D492AFF229C32CC5008B9DFC /* index.js */,
-				D492AFF329C32CC5008B9DFC /* ios */,
-				D492AFF729C32CC5008B9DFC /* index.d.ts */,
-			);
-			path = NativeHelper;
-			sourceTree = "<group>";
-		};
-		D492AFF329C32CC5008B9DFC /* ios */ = {
-			isa = PBXGroup;
-			children = (
-				D492AFF429C32CC5008B9DFC /* NativeHelperBridge.m */,
-				D492AFF529C32CC5008B9DFC /* NativeHelper.swift */,
-				D492AFF629C32CC5008B9DFC /* NativeHelperBridge.h */,
-			);
-			path = ios;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -283,8 +244,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D492AFF829C32CC5008B9DFC /* index.js in Resources */,
-				D492AFFB29C32CC5008B9DFC /* index.d.ts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -455,8 +414,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D492AFFA29C32CC5008B9DFC /* NativeHelper.swift in Sources */,
-				D492AFF929C32CC5008B9DFC /* NativeHelperBridge.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -477,7 +434,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-Hotels-HotelsTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -505,7 +461,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-Hotels-HotelsTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = HotelsTests/Info.plist;

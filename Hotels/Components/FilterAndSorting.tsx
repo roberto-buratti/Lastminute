@@ -68,8 +68,6 @@ export default class FilterAndSorting extends React.Component<IProps, IState> {
       copy.getString("filter_and_sorting_order_by_price"),
     ]
 
-    //console.log(`*** FilterAndSorting:render: currency=${filterAndSortingModel.currency}, price=${filterAndSortingModel.price} => min=${minPrice?.value} max=${maxPrice?.value}`)
-
     return <View 
       style={{...styles.container, ...style}} 
       onLayout={() => {
@@ -89,10 +87,7 @@ export default class FilterAndSorting extends React.Component<IProps, IState> {
           clearButtonMode={'always'}
           value={filterAndSortingModel.name}
           style={[
-            // Android pads top of TextInput by default for some reason
-            { paddingTop: 0 },
-            { paddingHorizontal: 10 },
-            { width: '100%', height: 50, borderRadius: 10, borderWidth: 1, borderColor: colors.veryLightGrey}
+            { width: '100%', height: 50, paddingHorizontal: 10, borderRadius: 10, borderWidth: 1, borderColor: colors.veryLightGrey}
           ]}
           onChangeText={(text) => {
             filterAndSortingModel.name = text
@@ -172,7 +167,7 @@ export default class FilterAndSorting extends React.Component<IProps, IState> {
         <View style={{...styles.row, marginTop: 10}}>
           <ActionButton 
             style={styles.action}
-            contentStyle={{ color: colors.white, fontWeight: 'bold' }} 
+            contentStyle={{ textAlign: 'center', color: colors.white, fontWeight: 'bold' }} 
             disabled={disabled || resultsCount < 1}
             onPress={() => {
               this._submit()
@@ -181,7 +176,7 @@ export default class FilterAndSorting extends React.Component<IProps, IState> {
           />
           <ActionButton 
             style={styles.action}
-            contentStyle={{ color: colors.white, fontWeight: 'bold' }} 
+            contentStyle={{ textAlign: 'center', color: colors.white, fontWeight: 'bold' }} 
             disabled={disabled}
             onPress={() => {
               console.log(`*** RESET: filterAndSortingModel=${JSON.stringify(filterAndSortingModel)}`)
@@ -249,9 +244,8 @@ const styles = StyleSheet.create({
     tintColor: colors.lastminute
   },
   action: {
-    height: 50, 
+    height: 60, 
     width: '45%',
-    // flex: 1, 
     justifyContent:'center', 
     padding: 10, 
     borderRadius: 10, 

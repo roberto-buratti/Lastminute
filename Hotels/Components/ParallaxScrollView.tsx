@@ -7,7 +7,6 @@ import colors from '../Styles/Colors'
 
 interface IProps extends FlatListProps<any> {
   stickyHeaderView?: React.ReactElement<any>
-  // stickyHeaderHeight: number
   parallaxView?: React.ReactElement<any>
   fixedView?: React.ReactElement<any>
   data: any[]
@@ -50,8 +49,6 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
 
     const parallaxHeight = Math.max(0, this.state.height - this.state.scrollOffset - stickyHeaderHeight - handleHeight)
 
-    // console.log(`*** ParallaxScrollView:render: height=${this.state.height} scrollOffset=${this.state.scrollOffset} parallaxHeight=${parallaxHeight}`)
-
     return (
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.container}>
         <FlatList
@@ -64,7 +61,6 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
           data={[{ key:'parallax' }, { key:'header' }, ...data]}
           stickyHeaderIndices={[1]}
           renderItem={itemData => {
-            // console.log(`*** ParallaxScrollView:renderItem: itemData.index=${itemData.index} itemData=${JSON.stringify(itemData)}`)
             if (itemData.index === 0) {
               return <View
                 key={itemData.item.key} 
@@ -102,11 +98,8 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
           onLayout={e => {
             if (this.state.height !== e.nativeEvent.layout.height) {
               this.setState({ height: e.nativeEvent.layout.height }, () => {
+                // this.scrollView.current?.scrollToOffset({animated: true, offset: this.state.height / 4})    
                 if (flatListProps.onLayout) { flatListProps.onLayout(e) }
-                // if (this.scrollView.current) {
-                //   this.scrollView.current.scrollToOffset({ animated: true, offset: this.state.height / 2 })
-                // }
-                //this.scrollView.current?.scrollToIndex({animated: true, index: 1, viewPosition: 0.5})    
               })
             }
           }}
@@ -121,10 +114,10 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
               this.resizeTimeout = undefined
             }
             if (scrollOffset < this.state.scrollOffset) {
-              // if we are scrolling down (so enlarging the parallax view) resize it immediately (to make it visible while scrolling)
+              // [ROB] if we are scrolling down (so enlarging the parallax view) resize it immediately (to make it visible while scrolling)
               this.setState({ scrollOffset: scrollOffset })
             } else if (scrollOffset > this.state.scrollOffset) {
-              // if we are scrolling up (so reducing the parallax view) resize it after a small delay (to avoid flickering)
+              // [ROB] if we are scrolling up (so reducing the parallax view) resize it after a small delay (to avoid flickering)
               this.resizeTimeout = setTimeout(() => {
                 this.setState({ scrollOffset: scrollOffset })
               }, 1000)
@@ -156,16 +149,14 @@ export default class ParallaxScrollView extends React.Component<IProps, IState> 
           }}
         />
       </KeyboardAvoidingView>
-
     )    
   }
 
   public redraw() {
     this.forceUpdate(() => {
-      console.log(`*** ParallaxView:redraw: now scrolling to end`)
-      //this.scrollView.current?.scrollToOffset({ animated: true, offset: this.state.height / 2 })
-      //this.scrollView.current?.scrollToEnd({animated: true})
-      this.scrollView.current?.scrollToIndex({animated: true, index: 0, viewPosition: 0})
+      this.setState({ scrollOffset: 0 }, () => {
+        this.scrollView.current?.scrollToIndex({animated: true, index: 0, viewPosition: 0})
+      })
     })
   }
 
@@ -187,7 +178,6 @@ const styles = StyleSheet.create({
   },
   handleBar: {
     backgroundColor: colors.white,
-    // ...shadows.invertedShadowObject,
     borderBottomColor: colors.veryLightGrey,
     borderTopColor: colors.veryLightGrey,
     borderLeftColor: colors.white,

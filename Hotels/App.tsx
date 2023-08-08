@@ -8,7 +8,6 @@
 import React from 'react';
 import {
   StyleSheet,
-  View,
 } from 'react-native';
 
 import {NavigationContainer, DefaultTheme} from '@react-navigation/native'
@@ -26,9 +25,6 @@ class App extends React.Component {
       <NavigationContainer theme={DefaultTheme}>
         <HomeScreen viewModel={this._viewModel.homeViewModel()}/>
       </NavigationContainer>
-        // <View style={{width:'100%', height:'100%'}}>
-        //   <HomeScreen viewModel={this._viewModel.homeViewModel()}/>
-        // </View>
     );
   } 
 }

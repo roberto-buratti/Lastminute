@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
   
-import IHotelsListViewModel, { HotelsViewModelEvents } from './IHotelsListViewModel'
+import HotelModel from '../../Models/HotelModel'
 import MapPointModel from '../../Models/MapPoint'
+import IHotelsListViewModel, { HotelsViewModelEvents } from './IHotelsListViewModel'
 
 import ParallaxScrollView from '../../Components/ParallaxScrollView'
 import MapWrapper from '../../Components/MapWrapper'
@@ -12,7 +13,6 @@ import HotelListItem, { HotelListItemMode } from '../../Components/HotelListItem
 import padding from '../../Styles/Padding'
 import colors from '../../Styles/Colors'
 import { image_not_available } from '../../Assets/Images'
-import HotelModel from '../../Models/HotelModel'
 
 interface IProps {
   viewModel: IHotelsListViewModel

@@ -1,6 +1,5 @@
 import React from 'react'
 
-// import {NavigationContainer, DefaultTheme} from '@react-navigation/native'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
   
 import IHomeViewModel from './IHomeViewModel'
@@ -35,19 +34,20 @@ export default class HomeScreen extends React.Component<IProps, IState> {
             return <HotelDetailsScreen viewModel={viewModel.hotelDetailsViewModel(hotel)} navigation={navigation}/>
         }
 
-        return ( //<NavigationContainer theme={DefaultTheme}>
+        return (
             <MainStack.Navigator screenOptions={
                 {
                     orientation: 'portrait',    // [ROB] disable landscape because the effect isn't pleasant
                     headerBackTitleVisible: false, 
                     headerTintColor: '#DE307C', 
-                    headerTitleStyle: { color: 'black' }                    
+                    headerTitleStyle: { color: 'black' },
+                    navigationBarColor: 'black'
                 }}
             >
                 <MainStack.Screen
                     name={"hotels_scene"}
                     component={HotelsScreenComponent}
-                    options={{title: copy.getString("hotels_list_scene_title")}}
+                    options={{title: copy.getString("hotels_list_scene_title") }}
                 />
                 <MainStack.Screen
                     name="hotel_details_scene"                
@@ -59,6 +59,6 @@ export default class HomeScreen extends React.Component<IProps, IState> {
                     }}
                 />
             </MainStack.Navigator>
-        ) //</NavigationContainer>
+        )
     }
 }

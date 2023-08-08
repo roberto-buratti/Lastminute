@@ -93,4 +93,13 @@ export default class FilterAndSortingModel {
     const max = Math.max(...values)
     return this._prices.find((p) => (currency == undefined || p.currency == currency) && p.value == max)!
   }
+
+  public get hasFilters() {
+    if (this.name) { return true }
+    if (this.stars) { return true }
+    if (this.userRating) { return true }
+    if (this.currency) { return true }
+    if (this.price) { return true }
+    return false
+  }
 }

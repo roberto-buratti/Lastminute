@@ -60,7 +60,7 @@ export default class ActionButton extends React.Component<IActionButtonProps, IA
     const { fade } = this.state
 
 
-    // It seems that TouchableOpacity always needs to have a child View component.
+    // [ROB] It seems that TouchableOpacity always needs to have a child View component.
     // So a component that composes a View isn't enough.
     // This is why we add a simple <View> outside of the <Animated.View>.
     return (<TouchableOpacity
@@ -72,7 +72,7 @@ export default class ActionButton extends React.Component<IActionButtonProps, IA
     <View>
       <Animated.View style={{ opacity: fade }}>
         {source && <Image source={source} style={[{tintColor: colors.lastminute}, contentStyle as ImageStyle, { alignSelf: 'center' }]}/>}
-        {title && <Text style={[{backgroundColor: colors.lastminute}, contentStyle as TextStyle, { alignSelf: 'center' }]}>{title}</Text>}
+        {title && <Text style={[contentStyle as TextStyle, { alignSelf: 'center'}]}>{title}</Text>}
         { this.props.children
           ? <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
             {this.props.children}
@@ -125,19 +125,20 @@ export default class ActionButton extends React.Component<IActionButtonProps, IA
 const styles = StyleSheet.create({
   badge: { 
     position: 'absolute',
-    width: 20,
-    height: 20,
-    right: -5,
-    top: -5,
-    zIndex: 20,
+    width: 18,
+    height: 18,
+    right: -25,
+    top: -8,
+    zIndex: 100,
     backgroundColor: 'red',
     color: 'white',
     textAlign: 'center',
     fontWeight: 'bold',
-    borderRadius: 10,
+    borderRadius: 9,
     borderWidth: 1,
     borderColor: 'red',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    fontSize: 12
   }
 })
 

@@ -218,7 +218,8 @@ const styles = StyleSheet.create({
   name: {
     alignSelf: 'center',    
     fontWeight:'bold', 
-    fontSize: 18
+    fontSize: 18,
+    color: colors.black
   },
   text: {
     flex: 2,

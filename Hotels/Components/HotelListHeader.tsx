@@ -47,6 +47,7 @@ export default class HotelListHeader extends React.Component<IProps, IState> {
           <View ref={this.filterButtonRef}>
             <ActionButton            
               source={filter}
+              badge={viewModel.filterAndSortingModel.hasFilters ? viewModel.hotels.length : undefined}
               onPress={() => {
                 this.setState({isFilterComponentVisibile: !isFilterComponentVisibile}, () => {
                   onToggleFilterComponent(this.state.isFilterComponentVisibile)
@@ -126,5 +127,6 @@ const styles = StyleSheet.create({
   filterAndSorting: {
     width: '100%',
     height: maxHeight - minHeight,
+    overflow: 'hidden'
   }
 })

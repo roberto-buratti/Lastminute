@@ -30,7 +30,7 @@ export default class MapPin extends React.Component<IProps, IState> {
     const { style, width, height, borderWidth, borderColor } = this.props
     const { source } = this.state
 
-    // using defaultSource={pin} is not needed, but it is a simple trick to make the pin be shown into a (buggy?) <Marker>
+    // [ROB] Using defaultSource={pin} is not needed, but it is a simple trick to make the pin be shown into a (buggy?) <Marker>
     return <View style={style}>
       <Image style={styles.background} source={pin} defaultSource={pin}/>
       <View style={styles.avatar}>
@@ -65,8 +65,6 @@ const styles = StyleSheet.create({
       zIndex: 2,
       marginTop: 6.5,
       alignSelf: 'center'
-      // marginLeft: 6.5,
-      // marginRight: 6.5,
     }
 })
   

@@ -17,7 +17,7 @@ export default class SmartImage extends React.Component<ImageProps, IState> {
 
   public render() {
     return (
-      <Image
+      <Image              
         {...this.props}
         source={this.state.source}
         onError={(event) => {
