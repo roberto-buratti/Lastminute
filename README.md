@@ -71,7 +71,7 @@ Instead of a simple modal dialog (like www.lastminute.come), I decided to implem
 ***CAVE***: The filter on "Stars" acts on a `not-less-than` basis, instead of `equal-to`. IMHO it is more useful this way.
 
 ***CAVE***: Actually the server returns all the prices in EUR (€).  
-I randomly changed some hotel to use GBP (£) or USD ($) just to let the user to be able to experiment the `Currency` filter.
+I randomly change some hotel to use GBP (£) or USD ($) just to let the user to be able to experiment the `Currency` filter.
 
 ##### 2. **Reverse Sort**
 
@@ -81,7 +81,7 @@ Probably (from a UX POV) it would have been better to separate sorting criteria 
 
 ##### 3. **Refresh**
 
-This button, just refresh the list from the server and redraws anything (I noticed that randomly the server stops responding... I'm sure this is wanted 😉).
+This button just refresh the list from the server and redraws anything (I noticed that randomly the server stops responding... I'm sure this is wanted 😉).
 
 ***Important***: Normally, the server call is really fast (obviously, since it is mocked!). I added 1000ms delay just to let the user see the visual effects. An activity indicator is shown while refreshing and all the interactors are disabled.
 
